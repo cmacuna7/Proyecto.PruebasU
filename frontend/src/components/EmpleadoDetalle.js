@@ -335,7 +335,7 @@ function EmpleadoDetalle({ detalle }) {
 					Vendedores
 				</button>
 				<button className="nav-btn" onClick={() => setModo("concesionarias")} disabled={modo === "concesionarias"}>
-					Concesionarias (próximo)
+					Concesionarias
 				</button>
 			</nav>
 
@@ -548,10 +548,73 @@ function EmpleadoDetalle({ detalle }) {
 				</div>
 			)}
 
-			{modo !== "autos" && modo !== "clientes" && modo !== "vendedores" && (
+			{modo !== "autos" && modo !== "clientes" && modo !== "vendedores" && modo !== "concesionarias" && (
 				<div style={{ marginTop: "1rem", padding: "1rem", background: "#fffbe6", borderRadius: 6 }}>
 					<h3>{modo.charAt(0).toUpperCase() + modo.slice(1)}</h3>
 					<p>Interfaz para {modo} no implementada aún. Se añadirá en futuras iteraciones.</p>
+				</div>
+			)}
+
+			{modo === "concesionarias" && (
+				<div>
+					<section className="panel-section">
+						<h3 className="section-heading">{entidadForm.id ? "Editar Concesionaria" : "Crear Concesionaria"}</h3>
+						{error && <div className="error">{error}</div>}
+						<form onSubmit={handleEntidadSubmit}>
+							{entidadConfigs.concesionarias.fields.map(field => (
+								<div className="form-row" key={field.name}>
+									<label>{field.label}:</label>
+									<input
+										className="input"
+										name={field.name}
+										type="text"
+										value={entidadForm[field.name] || ""}
+										onChange={handleEntidadChange}
+										required={field.required}
+									/>
+								</div>
+							))}
+							<div className="form-actions">
+								<button className="btn" type="submit">{entidadForm.id ? "Actualizar" : "Crear"}</button>
+								<button className="btn secondary" type="button" onClick={resetEntidadForm}>Limpiar</button>
+							</div>
+						</form>
+					</section>
+
+					<section className="panel-section">
+						<h3 className="section-heading">Listado de Concesionarias</h3>
+						{loading ? <p>Cargando...</p> : items.length === 0 ? <p>No hay concesionarias registradas.</p> : (
+							<table className="panel-table">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Nombre</th>
+										<th>Dirección</th>
+										<th>Ciudad</th>
+										<th>Teléfono</th>
+										<th>Gerente</th>
+										<th>Acciones</th>
+									</tr>
+								</thead>
+								<tbody>
+									{items.map(item => (
+										<tr key={item.id ?? item._id}>
+											<td>{item.id ?? item._id}</td>
+											<td>{item.nombre}</td>
+											<td>{item.direccion}</td>
+											<td>{item.ciudad}</td>
+											<td>{item.telefono}</td>
+											<td>{item.gerente}</td>
+											<td>
+												<button className="action-btn edit" onClick={() => handleEntidadEdit(item)}>Editar</button>
+												<button className="action-btn delete" onClick={() => handleEntidadDelete(item.id ?? item._id)}>Borrar</button>
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						)}
+					</section>
 				</div>
 			)}
 		</div>

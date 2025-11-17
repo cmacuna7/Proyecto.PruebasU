@@ -3,6 +3,7 @@ let corsPkg;
 const autoRoutes = require('./routes/auto.routes');
 const vendorRoutes = require('./routes/vendor.route');
 const clienteRoutes = require('./routes/cliente.routes');
+const concesionariaRoutes = require('./routes/concesionaria.routes');
 
 const app = express();
 
@@ -25,6 +26,8 @@ app.use('/api/vendedores', vendorRoutes);
 app.use('/vendedores', vendorRoutes);
 app.use('/api/clientes', clienteRoutes);
 app.use('/clientes', clienteRoutes);
+app.use('/api/concesionarias', concesionariaRoutes);
+app.use('/concesionarias', concesionariaRoutes);
 
 // manejo simple de 404
 app.use((req, res) => {

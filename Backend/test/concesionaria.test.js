@@ -1,0 +1,211 @@
+const request = require('supertest');
+const app = require('../src/app.js');
+
+describe('API de Concesionarias', () => {
+  // GET
+  test('GET /api/concesionarias debería devolver lista vacía inicialmente', async () => {
+    const res = await request(app).get('/api/concesionarias');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual([]);
+  });
+
+  // POST
+  test('POST /api/concesionarias debería crear una nueva concesionaria', async () => {
+    const nuevaConcesionaria = {
+      nombre: 'AutoMax',
+      direccion: 'Av. de los Libertadores 500',
+      telefono: '022345678',
+      ciudad: 'Quito',
+      gerente: 'Carlos Mendoza'
+    };
+
+    const res = await request(app).post('/api/concesionarias').send(nuevaConcesionaria);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toHaveProperty('id');
+    expect(res.body.nombre).toBe('AutoMax');
+    expect(res.body.ciudad).toBe('Quito');
+    expect(res.body.gerente).toBe('Carlos Mendoza');
+  });
+
+  // POST: datos inválidos
+  test('POST /api/concesionarias debería rechazar datos incompletos', async () => {
+    const res = await request(app).post('/api/concesionarias').send({ nombre: 'AutoPlaza' });
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty('message', 'Nombre, Dirección, Teléfono, Ciudad y Gerente son requeridos');
+  });
+
+  // PUT
+  test('PUT /api/concesionarias/:id debería actualizar una concesionaria existente', async () => {
+    const concesionaria = {
+      nombre: 'VehículosPremium',
+      direccion: 'Calle Principal 123',
+      telefono: '023456789',
+      ciudad: 'Guayaquil',
+      gerente: 'María González'
+    };
+
+    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const id = creado.body.id;
+
+    const actualizado = await request(app)
+      .put(`/api/concesionarias/${id}`)
+      .send({ telefono: '029999999' });
+
+    expect(actualizado.statusCode).toBe(200);
+    expect(actualizado.body.telefono).toBe('029999999');
+  });
+
+  // DELETE
+  test('DELETE /api/concesionarias/:id debería eliminar una concesionaria', async () => {
+    const concesionaria = {
+      nombre: 'MotorCenter',
+      direccion: 'Av. Tercera 789',
+      telefono: '024567890',
+      ciudad: 'Cuenca',
+      gerente: 'Jorge Ramírez'
+    };
+
+    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const id = creado.body.id;
+
+    const eliminado = await request(app).delete(`/api/concesionarias/${id}`);
+    expect(eliminado.statusCode).toBe(200);
+    expect(eliminado.body.nombre).toBe('MotorCenter');
+
+    const res = await request(app).get('/api/concesionarias');
+    expect(res.body.find(c => c.id === id)).toBeUndefined();
+  });
+
+  // EDGE CASE: Actualizar concesionaria que no existe
+  test('PUT /api/concesionarias/:id debería retornar 404 si la concesionaria no existe', async () => {
+    const idInexistente = 999999;
+    const res = await request(app)
+      .put(`/api/concesionarias/${idInexistente}`)
+      .send({ telefono: '029999999' });
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body).toHaveProperty('message', 'Concesionaria no encontrada');
+  });
+
+  // EDGE CASE: Eliminar concesionaria que no existe
+  test('DELETE /api/concesionarias/:id debería retornar 404 si la concesionaria no existe', async () => {
+    const idInexistente = 999999;
+    const res = await request(app).delete(`/api/concesionarias/${idInexistente}`);
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body).toHaveProperty('message', 'Concesionaria no encontrada');
+  });
+
+  // INTEGRIDAD DE DATOS: Actualización parcial
+  test('PUT /api/concesionarias/:id debería permitir actualización parcial de campos', async () => {
+    const concesionaria = {
+      nombre: 'AutoElite',
+      direccion: 'Av. Central 321',
+      telefono: '025678901',
+      ciudad: 'Loja',
+      gerente: 'Ana Torres'
+    };
+
+    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const id = creado.body.id;
+
+    const actualizado = await request(app)
+      .put(`/api/concesionarias/${id}`)
+      .send({ ciudad: 'Ambato' });
+
+    expect(actualizado.statusCode).toBe(200);
+    expect(actualizado.body.ciudad).toBe('Ambato');
+    expect(actualizado.body.nombre).toBe('AutoElite');
+    expect(actualizado.body.gerente).toBe('Ana Torres');
+  });
+
+  // VALIDACIÓN: Campos con solo espacios
+  test('POST /api/concesionarias debería rechazar campos vacíos o con solo espacios', async () => {
+    const concesionariaInvalida = {
+      nombre: '   ',
+      direccion: 'Calle 123',
+      telefono: '022345678',
+      ciudad: 'Quito',
+      gerente: 'Pedro López'
+    };
+
+    const res = await request(app).post('/api/concesionarias').send(concesionariaInvalida);
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty('message', 'Los campos no pueden estar vacíos o contener solo espacios');
+  });
+
+  // COBERTURA: Actualizar gerente específicamente
+  test('PUT /api/concesionarias/:id debería actualizar el gerente de la concesionaria', async () => {
+    const concesionaria = {
+      nombre: 'MegaAutos',
+      direccion: 'Calle Norte 111',
+      telefono: '026789012',
+      ciudad: 'Machala',
+      gerente: 'Roberto García'
+    };
+
+    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const id = creado.body.id;
+
+    const actualizado = await request(app)
+      .put(`/api/concesionarias/${id}`)
+      .send({ gerente: 'Patricia Morales' });
+
+    expect(actualizado.statusCode).toBe(200);
+    expect(actualizado.body.gerente).toBe('Patricia Morales');
+    expect(actualizado.body.nombre).toBe('MegaAutos');
+  });
+
+  // COBERTURA: Actualizar múltiples campos
+  test('PUT /api/concesionarias/:id debería actualizar múltiples campos', async () => {
+    const concesionaria = {
+      nombre: 'SuperAutos',
+      direccion: 'Av. Sur 222',
+      telefono: '027890123',
+      ciudad: 'Esmeraldas',
+      gerente: 'Luis Hernández'
+    };
+
+    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const id = creado.body.id;
+
+    const actualizado = await request(app)
+      .put(`/api/concesionarias/${id}`)
+      .send({ 
+        direccion: 'Av. Nueva 333',
+        ciudad: 'Santo Domingo',
+        telefono: '028901234'
+      });
+
+    expect(actualizado.statusCode).toBe(200);
+    expect(actualizado.body.direccion).toBe('Av. Nueva 333');
+    expect(actualizado.body.ciudad).toBe('Santo Domingo');
+    expect(actualizado.body.telefono).toBe('028901234');
+    expect(actualizado.body.nombre).toBe('SuperAutos');
+  });
+
+  // COBERTURA: Actualizar nombre
+  test('PUT /api/concesionarias/:id debería actualizar el nombre de la concesionaria', async () => {
+    const concesionaria = {
+      nombre: 'AutosEcuador',
+      direccion: 'Calle Vieja 100',
+      telefono: '029012345',
+      ciudad: 'Ibarra',
+      gerente: 'Fernando Silva'
+    };
+
+    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const id = creado.body.id;
+
+    const actualizado = await request(app)
+      .put(`/api/concesionarias/${id}`)
+      .send({ 
+        nombre: 'AutosEcuador Premium'
+      });
+
+    expect(actualizado.statusCode).toBe(200);
+    expect(actualizado.body.nombre).toBe('AutosEcuador Premium');
+    expect(actualizado.body.gerente).toBe('Fernando Silva');
+  });
+});
