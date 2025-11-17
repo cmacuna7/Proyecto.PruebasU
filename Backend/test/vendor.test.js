@@ -87,7 +87,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       .send({
         email: "x@test.com",
         telefono: "1234567",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-124'
       });
 
     expect(res.statusCode).toBe(400);
@@ -100,7 +101,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       .send({
         name: "Mario",
         telefono: "1234567",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-125'
       });
 
     expect(res.statusCode).toBe(400);
@@ -113,7 +115,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       .send({
         name: "Mario",
         email: "mario@test.com",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-128'
       });
 
     expect(res.statusCode).toBe(400);
@@ -126,7 +129,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       .send({
         name: "Mario",
         email: "mario@test.com",
-        telefono: "1234567"
+        telefono: "1234567",
+        codigoEmpleado: 'EMP-129'
       });
 
     expect(res.statusCode).toBe(400);
@@ -140,9 +144,9 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Pedro",
         email: "correo_malo.com",
         telefono: "1234567",
-        comision: 15
+        comision: 15,
+        codigoEmpleado: 'EMP-130'
       });
-
     expect(res.statusCode).toBe(400);
   });
 
@@ -154,7 +158,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Pedro",
         email: "pedro@test.com",
         telefono: "12abc",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-150',
       });
 
     expect(res.statusCode).toBe(400);
@@ -168,7 +173,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Carlos",
         email: "c@test.com",
         telefono: "123",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-130'
       });
 
     expect(res.statusCode).toBe(400);
@@ -182,7 +188,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Luis",
         email: "l@test.com",
         telefono: "1234567",
-        comision: 150
+        comision: 150,
+        codigoEmpleado: 'EMP-129',
       });
 
     expect(res.statusCode).toBe(400);
@@ -196,7 +203,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Repetido",
         email: "dup@test.com",
         telefono: "1234567",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-1000'
       });
 
     const res = await request(app)
@@ -205,7 +213,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Repetido2",
         email: "dup@test.com",
         telefono: "1234567",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-2000'
       });
 
     expect(res.statusCode).toBe(409);
@@ -270,7 +279,8 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
         name: "Duplicado PUT",
         email: "duplicado@test.com",
         telefono: "1234567",
-        comision: 10
+        comision: 10,
+        codigoEmpleado: 'EMP-147'
       });
 
     const res = await request(app)
@@ -350,4 +360,60 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
     expect(resUpdate.body.name).toBe("Nuevo Nombre");
   });
 
+  test('POST / -> códigoEmpleado duplicado debe fallar', async () => {
+    await request(app)
+      .post('/api/vendedores')
+      .send({
+        name: "Pedro",
+        email: "pedro@test.com",
+        telefono: "12345678",
+        comision: 10,
+        codigoEmpleado: "EMP-100"
+      });
+
+    const res = await request(app)
+      .post('/api/vendedores')
+      .send({
+        name: "Juan",
+        email: "juan@test.com",
+        telefono: "87654321",
+        comision: 20,
+        codigoEmpleado: "EMP-100"
+      });
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body.message).toBe('El código de empleado ya está registrado');
+  });
+
+  test('PUT /:id -> debe fallar si el códigoEmpleado ya pertenece a otro vendedor', async () => {
+
+    const v1 = await request(app)
+      .post('/api/vendedores')
+      .send({
+        name: "Luis",
+        email: "luis@test.com",
+        telefono: "11111111",
+        comision: 15,
+        codigoEmpleado: "EMP-200"
+      });
+
+    const v2 = await request(app)
+      .post('/api/vendedores')
+      .send({
+        name: "Mario",
+        email: "mario@test.com",
+        telefono: "22222222",
+        comision: 20,
+        codigoEmpleado: "EMP-300"
+      });
+
+    const res = await request(app)
+      .put(`/api/vendedores/${v2.body.id}`)
+      .send({
+        codigoEmpleado: "EMP-200" 
+      });
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body.message).toBe('El código de empleado ya está registrado');
+  });
 });
