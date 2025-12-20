@@ -3,6 +3,8 @@ const autoRoutes = require('./routes/auto.routes');
 const vendorRoutes = require('./routes/vendor.route');
 const clienteRoutes = require('./routes/cliente.routes');
 const concesionariaRoutes = require('./routes/concesionaria.routes');
+const authRoutes = require('./routes/auth.routes');
+const { authMiddleware } = require('./middleware/authMiddleware');
 
 const app = express();
 
@@ -23,15 +25,20 @@ app.get('/', (req, res) => {
     res.json({ message: 'API Concesionarias - Backend activo' });
 });
 
+// Rutas de autenticación (sin protección)
+app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 // Rutas Base de cada modelo (con y sin prefijo /api para compatibilidad)
-app.use('/api/autos', autoRoutes);
-app.use('/autos', autoRoutes);
-app.use('/api/vendedores', vendorRoutes);
-app.use('/vendedores', vendorRoutes);
-app.use('/api/clientes', clienteRoutes);
-app.use('/clientes', clienteRoutes);
-app.use('/api/concesionarias', concesionariaRoutes);
-app.use('/concesionarias', concesionariaRoutes);
+// Protegidas con autenticación
+app.use('/api/autos', authMiddleware, autoRoutes);
+app.use('/autos', authMiddleware, autoRoutes);
+app.use('/api/vendedores', authMiddleware, vendorRoutes);
+app.use('/vendedores', authMiddleware, vendorRoutes);
+app.use('/api/clientes', authMiddleware, clienteRoutes);
+app.use('/clientes', authMiddleware, clienteRoutes);
+app.use('/api/concesionarias', authMiddleware, concesionariaRoutes);
+app.use('/concesionarias', authMiddleware, concesionariaRoutes);
 
 // manejo simple de 404
 app.use((req, res) => {

@@ -1,3 +1,4 @@
+// Estructura de Auto:
 // {
 //    id
 //    marca
@@ -8,63 +9,87 @@
 // }
 const autos = [];
 
-// GET
+// GET - Obtener todos los autos
 function getAllAutos(req, res) {
     res.json(autos);
 }
 
-// POST
+// POST - Crear nuevo auto
 function addNewAuto(req, res) {
     const { marca, modelo, año, color, numeroSerie } = req.body;
 
-    // Validación básica de entrada 
+    // Validación: campos obligatorios
     if (!marca || !modelo || !año || !color || !numeroSerie) {
         return res.status(400).json({ message: 'Marca, Modelo, Año, Color y Número de Serie son requeridos' });
     }
 
-    // Creamos un objeto auto 
+    // Validación: año debe ser un número válido
+    const yearNum = Number(año);
+    if (isNaN(yearNum) || yearNum < 1900 || yearNum > new Date().getFullYear() + 1) {
+        return res.status(400).json({ message: 'Año debe ser un número válido entre 1900 y ' + (new Date().getFullYear() + 1) });
+    }
+
+    // Validación: número de serie único
+    if (autos.some(a => a.numeroSerie.toUpperCase() === String(numeroSerie).toUpperCase())) {
+        return res.status(400).json({ message: 'El número de serie ya existe' });
+    }
+
+    // Crear nuevo auto
     const newAuto = {
-        id: Date.now(), // ID usando Date.now()
-        marca,
-        modelo,
-        año,
-        color,
-        numeroSerie
+        id: Date.now(),
+        marca: String(marca).trim(),
+        modelo: String(modelo).trim(),
+        año: yearNum,
+        color: String(color).trim(),
+        numeroSerie: String(numeroSerie).trim().toUpperCase()
     };
 
-    // Lo añadimos al arreglo de autos
     autos.push(newAuto);
-
-    // Respondemos con el auto creado
     res.status(201).json(newAuto);
 }
 
-// PUT
+// PUT - Actualizar auto existente
 function updateAuto(req, res) {
     const { id } = req.params;
     const { marca, modelo, año, color, numeroSerie } = req.body;
 
-    // comparar usando Number(id) 
+    // Buscar auto por ID
     const i = autos.findIndex(a => a.id === Number(id));
     if (i === -1) return res.status(404).json({ message: 'Auto no encontrado' });
 
-    if (marca !== undefined) autos[i].marca = marca;
-    if (modelo !== undefined) autos[i].modelo = modelo;
-    if (año !== undefined) autos[i].año = año;
-    if (color !== undefined) autos[i].color = color;
-    if (numeroSerie !== undefined) autos[i].numeroSerie = numeroSerie;
+    // Validaciones si se proveen nuevos valores
+    if (año !== undefined) {
+        const yearNum = Number(año);
+        if (isNaN(yearNum) || yearNum < 1900 || yearNum > new Date().getFullYear() + 1) {
+            return res.status(400).json({ message: 'Año debe ser un número válido entre 1900 y ' + (new Date().getFullYear() + 1) });
+        }
+        autos[i].año = yearNum;
+    }
+
+    // Validar número de serie único (si se actualiza)
+    if (numeroSerie !== undefined) {
+        const nuevoSerie = String(numeroSerie).trim().toUpperCase();
+        if (autos.some((a, idx) => idx !== i && a.numeroSerie === nuevoSerie)) {
+            return res.status(400).json({ message: 'El número de serie ya existe' });
+        }
+        autos[i].numeroSerie = nuevoSerie;
+    }
+
+    // Actualizar campos opcionales
+    if (marca !== undefined) autos[i].marca = String(marca).trim();
+    if (modelo !== undefined) autos[i].modelo = String(modelo).trim();
+    if (color !== undefined) autos[i].color = String(color).trim();
 
     res.json(autos[i]);
 }
 
-// DELETE
+// DELETE - Eliminar auto
 function deleteAuto(req, res) {
     const { id } = req.params;
 
-    // comparar usando Number(id) 
+    // Buscar y eliminar auto
     const index = autos.findIndex(a => a.id === Number(id));
-    if (index === -1) return res.status(404).json({ message: 'Auto no encontrado' }); 
-    //404: Auto no encontrado
+    if (index === -1) return res.status(404).json({ message: 'Auto no encontrado' });
 
     const deleted = autos.splice(index, 1);
 

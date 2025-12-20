@@ -3,6 +3,7 @@ const app = require('../src/app');
 
 let newVendorId;
 let putVendorId;
+let token;
 
 describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
@@ -14,10 +15,20 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
     codigoEmpleado: 'EMP-123'
   };
 
+  // Obtener token antes de los tests
+  beforeAll(async () => {
+    const loginRes = await request(app).post('/api/auth/login').set('Authorization', `Bearer ${token}`).send({
+      email: 'admin@consecionaria.com',
+      password: 'consesionariachida'
+    });
+    token = loginRes.body.token;
+  });
+
   // 1. POST creación válida
   test('POST / -> debe crear un nuevo vendedor', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer ${token}`)
       .send(validVendor);
 
     expect(res.statusCode).toBe(201);
@@ -29,7 +40,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   // 2. GET por ID
   test('GET /:id -> debe obtener un vendedor por su ID', async () => {
-    const res = await request(app).get(`/api/vendedores/${newVendorId}`);
+    const res = await request(app).get(`/api/vendedores/${newVendorId}`).set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.id).toBe(newVendorId);
@@ -37,7 +48,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   // 3. GET ALL
   test('GET / -> debe obtener todos los vendedores', async () => {
-    const res = await request(app).get('/api/vendedores');
+    const res = await request(app).get('/api/vendedores').set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
@@ -52,7 +63,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
     };
 
     const res = await request(app)
-      .put(`/api/vendedores/${newVendorId}`)
+      .put(`/api/vendedores/${newVendorId}`).set('Authorization', `Bearer ${token}`)
       .send(updatedData);
 
     expect(res.statusCode).toBe(200);
@@ -62,7 +73,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   // 5. DELETE eliminación válida
   test('DELETE /:id -> debe eliminar un vendedor', async () => {
-    const res = await request(app).delete(`/api/vendedores/${newVendorId}`);
+    const res = await request(app).delete(`/api/vendedores/${newVendorId}`).set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
     expect(res.body.message).toBe('Vendedor eliminado exitosamente');
@@ -70,20 +81,20 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   // 6. GET tras DELETE
   test('GET /:id -> debe devolver 404 si el vendedor fue eliminado', async () => {
-    const res = await request(app).get(`/api/vendedores/${newVendorId}`);
+    const res = await request(app).get(`/api/vendedores/${newVendorId}`).set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(404);
   });
 
   // 7. GET ID inexistente
   test('GET /:id -> debe devolver 404 para un ID inexistente', async () => {
-    const res = await request(app).get('/api/vendedores/999999');
+    const res = await request(app).get('/api/vendedores/999999').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(404);
   });
 
   // 8. POST Validación: falta el campo name
   test('POST / -> debe fallar si falta name', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         email: "x@test.com",
         telefono: "1234567",
@@ -97,7 +108,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 9. POST Validación: falta el campo email
   test('POST / -> debe fallar si falta email', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Mario",
         telefono: "1234567",
@@ -111,7 +122,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 10. POST Validación: falta el campo teléfono
   test('POST / -> debe fallar si falta telefono', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Mario",
         email: "mario@test.com",
@@ -125,7 +136,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 11. POST Validación: falta el campo comisión
   test('POST / -> debe fallar si falta comision', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Mario",
         email: "mario@test.com",
@@ -139,7 +150,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 12. POST Validación email inválido
   test('POST / -> email inválido debe fallar', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Pedro",
         email: "correo_malo.com",
@@ -153,7 +164,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 13. POST Validación teléfono inválido
   test('POST / -> teléfono inválido debe fallar', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Pedro",
         email: "pedro@test.com",
@@ -168,7 +179,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 14. POST Validación teléfono muy corto
   test('POST / -> teléfono demasiado corto debe fallar', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Carlos",
         email: "c@test.com",
@@ -183,7 +194,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 15. POST Validación comision fuera de rango
   test('POST / -> comisión fuera de 0-100 debe fallar', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Luis",
         email: "l@test.com",
@@ -198,7 +209,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 16. POST Validación email duplicado
   test('POST / -> email duplicado debe fallar', async () => {
     await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Repetido",
         email: "dup@test.com",
@@ -208,7 +219,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       });
 
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Repetido2",
         email: "dup@test.com",
@@ -223,7 +234,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 17. PUT -> vendedor no existe
   test('PUT /:id -> debe devolver 404 si el vendedor no existe', async () => {
     const res = await request(app)
-      .put('/api/vendedores/999999')
+      .put('/api/vendedores/999999').set('Authorization', `Bearer ${token}`)
       .send({ name: "Nuevo nombre" });
 
     expect(res.statusCode).toBe(404);
@@ -231,7 +242,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   test('POST / -> crear vendedor para pruebas PUT adicionales', async () => {
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "PUT Tester",
         email: "put@test.com",
@@ -247,7 +258,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 18. PUT -> email inválido
   test('PUT /:id -> debe fallar si el email es inválido', async () => {
     const res = await request(app)
-      .put(`/api/vendedores/${putVendorId}`)
+      .put(`/api/vendedores/${putVendorId}`).set('Authorization', `Bearer ${token}`)
       .send({ email: "correo_malo" });
 
     expect(res.statusCode).toBe(400);
@@ -256,7 +267,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 19. PUT -> teléfono inválido
   test('PUT /:id -> debe fallar si el teléfono es inválido', async () => {
     const res = await request(app)
-      .put(`/api/vendedores/${putVendorId}`)
+      .put(`/api/vendedores/${putVendorId}`).set('Authorization', `Bearer ${token}`)
       .send({ telefono: "12ab" });
 
     expect(res.statusCode).toBe(400);
@@ -265,7 +276,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 20. PUT -> comisión inválida
   test('PUT /:id -> debe fallar si la comisión es inválida', async () => {
     const res = await request(app)
-      .put(`/api/vendedores/${putVendorId}`)
+      .put(`/api/vendedores/${putVendorId}`).set('Authorization', `Bearer ${token}`)
       .send({ comision: 200 });
 
     expect(res.statusCode).toBe(400);
@@ -274,7 +285,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 21. PUT -> email duplicado
   test('PUT /:id -> debe fallar si el email ya pertenece a otro vendedor', async () => {
     await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Duplicado PUT",
         email: "duplicado@test.com",
@@ -284,7 +295,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       });
 
     const res = await request(app)
-      .put(`/api/vendedores/${putVendorId}`)
+      .put(`/api/vendedores/${putVendorId}`).set('Authorization', `Bearer ${token}`)
       .send({ email: "duplicado@test.com" });
 
     expect(res.statusCode).toBe(409);
@@ -292,19 +303,19 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   // 22. DELETE -> vendedor no existe
   test('DELETE /:id -> debe devolver 404 si el vendedor no existe', async () => {
-    const res = await request(app).delete('/api/vendedores/999999');
+    const res = await request(app).delete('/api/vendedores/999999').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(404);
   });
 
   // 23. GET ALL -> debe devolver arreglo vacío si no hay vendedores
   test('GET / -> si no hay vendedores debe devolver []', async () => {
-    const all = await request(app).get('/api/vendedores');
+    const all = await request(app).get('/api/vendedores').set('Authorization', `Bearer ${token}`);
 
     for (const v of all.body) {
-      await request(app).delete(`/api/vendedores/${v.id}`);
+      await request(app).delete(`/api/vendedores/${v.id}`).set('Authorization', `Bearer ${token}`);
     }
 
-    const res = await request(app).get('/api/vendedores');
+    const res = await request(app).get('/api/vendedores').set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual([]);
@@ -313,7 +324,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 24. PUT -> si no se envía name, se mantiene el anterior
   test('PUT /:id -> si no se envía name debe mantenerse el existente', async () => {
     const resCreate = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Nombre Original",
         email: "no-name@test.com",
@@ -325,7 +336,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
     const vid = resCreate.body.id;
 
     const resUpdate = await request(app)
-      .put(`/api/vendedores/${vid}`)
+      .put(`/api/vendedores/${vid}`).set('Authorization', `Bearer ${token}`)
       .send({
         codigoEmpleado: "EMP-NEW"
       });
@@ -338,7 +349,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   // 25. PUT -> si no se envía codigoEmpleado mantiene el anterior
   test('PUT /:id -> si no se envía codigoEmpleado debe mantenerse el existente', async () => {
     const resCreate = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Para Codigo",
         email: "no-code@test.com",
@@ -350,7 +361,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
     const vid = resCreate.body.id;
 
     const resUpdate = await request(app)
-      .put(`/api/vendedores/${vid}`)
+      .put(`/api/vendedores/${vid}`).set('Authorization', `Bearer ${token}`)
       .send({
         name: "Nuevo Nombre"
       });
@@ -362,7 +373,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   test('POST / -> códigoEmpleado duplicado debe fallar', async () => {
     await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Pedro",
         email: "pedro@test.com",
@@ -372,7 +383,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       });
 
     const res = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Juan",
         email: "juan@test.com",
@@ -388,7 +399,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
   test('PUT /:id -> debe fallar si el códigoEmpleado ya pertenece a otro vendedor', async () => {
 
     const v1 = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Luis",
         email: "luis@test.com",
@@ -398,7 +409,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       });
 
     const v2 = await request(app)
-      .post('/api/vendedores')
+      .post('/api/vendedores').set('Authorization', `Bearer ${token}`)
       .send({
         name: "Mario",
         email: "mario@test.com",
@@ -408,7 +419,7 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
       });
 
     const res = await request(app)
-      .put(`/api/vendedores/${v2.body.id}`)
+      .put(`/api/vendedores/${v2.body.id}`).set('Authorization', `Bearer ${token}`)
       .send({
         codigoEmpleado: "EMP-200" 
       });
@@ -417,3 +428,4 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
     expect(res.body.message).toBe('El código de empleado ya está registrado');
   });
 });
+

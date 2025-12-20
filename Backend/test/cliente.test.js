@@ -1,10 +1,21 @@
 const request = require('supertest');
 const app = require('../src/app.js');
 
+let token;
+
 describe('API de Clientes', () => {
+  // Obtener token antes de los tests
+  beforeAll(async () => {
+    const loginRes = await request(app).post('/api/auth/login').set('Authorization', `Bearer ${token}`).send({
+      email: 'admin@consecionaria.com',
+      password: 'consesionariachida'
+    });
+    token = loginRes.body.token;
+  });
+
   // GET
   test('GET /api/clientes debería devolver lista vacía inicialmente', async () => {
-    const res = await request(app).get('/api/clientes');
+    const res = await request(app).get('/api/clientes').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual([]);
   });
@@ -19,7 +30,7 @@ describe('API de Clientes', () => {
       ciudad: 'Quito'
     };
 
-    const res = await request(app).post('/api/clientes').send(nuevoCliente);
+    const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(nuevoCliente);
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('id');
@@ -29,7 +40,7 @@ describe('API de Clientes', () => {
 
   // POST: datos inválidos
   test('POST /api/clientes debería rechazar datos inválidos', async () => {
-    const res = await request(app).post('/api/clientes').send({ nombre: 'María' });
+    const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send({ nombre: 'María' });
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'Nombre, Email, Teléfono, Dirección y Ciudad son requeridos');
   });
@@ -44,11 +55,11 @@ describe('API de Clientes', () => {
       ciudad: 'Guayaquil'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id}`)
+      .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ telefono: '0999999999' });
 
     expect(actualizado.statusCode).toBe(200);
@@ -65,14 +76,14 @@ describe('API de Clientes', () => {
       ciudad: 'Cuenca'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
-    const eliminado = await request(app).delete(`/api/clientes/${id}`);
+    const eliminado = await request(app).delete(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`);
     expect(eliminado.statusCode).toBe(200);
     expect(eliminado.body.nombre).toBe('Carlos Rodríguez');
 
-    const res = await request(app).get('/api/clientes');
+    const res = await request(app).get('/api/clientes').set('Authorization', `Bearer ${token}`);
     expect(res.body.find(c => c.id === id)).toBeUndefined();
   });
 
@@ -86,7 +97,7 @@ describe('API de Clientes', () => {
       ciudad: 'Quito'
     };
 
-    const res = await request(app).post('/api/clientes').send(clienteEmailInvalido);
+    const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(clienteEmailInvalido);
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'El email no tiene un formato válido');
   });
@@ -95,7 +106,7 @@ describe('API de Clientes', () => {
   test('PUT /api/clientes/:id debería retornar 404 si el cliente no existe', async () => {
     const idInexistente = 999999;
     const res = await request(app)
-      .put(`/api/clientes/${idInexistente}`)
+      .put(`/api/clientes/${idInexistente}`).set('Authorization', `Bearer ${token}`)
       .send({ telefono: '0999999999' });
 
     expect(res.statusCode).toBe(404);
@@ -105,7 +116,7 @@ describe('API de Clientes', () => {
   // EDGE CASE: Eliminar cliente que no existe
   test('DELETE /api/clientes/:id debería retornar 404 si el cliente no existe', async () => {
     const idInexistente = 999999;
-    const res = await request(app).delete(`/api/clientes/${idInexistente}`);
+    const res = await request(app).delete(`/api/clientes/${idInexistente}`).set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(404);
     expect(res.body).toHaveProperty('message', 'Cliente no encontrado');
@@ -121,11 +132,11 @@ describe('API de Clientes', () => {
       ciudad: 'Loja'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id}`)
+      .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ ciudad: 'Ambato' });
 
     expect(actualizado.statusCode).toBe(200);
@@ -144,7 +155,7 @@ describe('API de Clientes', () => {
       ciudad: 'Quito'
     };
 
-    const res = await request(app).post('/api/clientes').send(clienteInvalido);
+    const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(clienteInvalido);
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'Los campos no pueden estar vacíos o contener solo espacios');
   });
@@ -159,11 +170,11 @@ describe('API de Clientes', () => {
       ciudad: 'Machala'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id}`)
+      .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ email: 'nuevo.email@email.com' });
 
     expect(actualizado.statusCode).toBe(200);
@@ -181,11 +192,11 @@ describe('API de Clientes', () => {
       ciudad: 'Esmeraldas'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id}`)
+      .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ 
         email: 'patricia.new@email.com',
         ciudad: 'Santo Domingo'
@@ -207,11 +218,11 @@ describe('API de Clientes', () => {
       ciudad: 'Ibarra'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id}`)
+      .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ 
         nombre: 'Luis Fernando Hernández',
         direccion: 'Calle Nueva 200'
@@ -240,8 +251,8 @@ describe('API de Clientes', () => {
       ciudad: 'Guayaquil'
     };
 
-    await request(app).post('/api/clientes').send(cliente1);
-    const res = await request(app).post('/api/clientes').send(cliente2);
+    await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente1);
+    const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente2);
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'El email ya está registrado');
@@ -265,8 +276,8 @@ describe('API de Clientes', () => {
       ciudad: 'Guayaquil'
     };
 
-    await request(app).post('/api/clientes').send(cliente1);
-    const res = await request(app).post('/api/clientes').send(cliente2);
+    await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente1);
+    const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente2);
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'El email ya está registrado');
@@ -290,12 +301,12 @@ describe('API de Clientes', () => {
       ciudad: 'Guayaquil'
     };
 
-    await request(app).post('/api/clientes').send(cliente1);
-    const creado2 = await request(app).post('/api/clientes').send(cliente2);
+    await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente1);
+    const creado2 = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente2);
     const id2 = creado2.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id2}`)
+      .put(`/api/clientes/${id2}`).set('Authorization', `Bearer ${token}`)
       .send({ email: 'cliente1@email.com' });
 
     expect(actualizado.statusCode).toBe(400);
@@ -312,11 +323,11 @@ describe('API de Clientes', () => {
       ciudad: 'Quito'
     };
 
-    const creado = await request(app).post('/api/clientes').send(cliente);
+    const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/clientes/${id}`)
+      .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ 
         nombre: 'Cliente Modificado',
         email: 'original@email.com'
@@ -327,3 +338,4 @@ describe('API de Clientes', () => {
     expect(actualizado.body.email).toBe('original@email.com');
   });
 });
+

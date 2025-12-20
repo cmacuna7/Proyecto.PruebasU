@@ -30,7 +30,8 @@ export const crearAuto = async (auto) => {
       body: JSON.stringify(auto),
     });
     if (!response.ok) {
-      throw new Error("Error al crear el auto");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al crear el auto");
     }
     return await response.json();
   } catch (error) {
@@ -52,7 +53,8 @@ export const actualizarAuto = async (id, auto) => {
       body: JSON.stringify(auto),
     });
     if (!response.ok) {
-      throw new Error("Error al actualizar el auto");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al actualizar el auto");
     }
     return await response.json();
   } catch (error) {
@@ -70,7 +72,8 @@ export const eliminarAuto = async (id) => {
       method: "DELETE",
     });
     if (!response.ok) {
-      throw new Error("Error al eliminar el auto");
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Error al eliminar el auto");
     }
     return await response.json();
   } catch (error) {

@@ -1,10 +1,21 @@
 const request = require('supertest');
 const app = require('../src/app.js');
 
+let token;
+
 describe('API de Concesionarias', () => {
+  // Obtener token antes de los tests
+  beforeAll(async () => {
+    const loginRes = await request(app).post('/api/auth/login').set('Authorization', `Bearer ${token}`).send({
+      email: 'admin@consecionaria.com',
+      password: 'consesionariachida'
+    });
+    token = loginRes.body.token;
+  });
+
   // GET
   test('GET /api/concesionarias debería devolver lista vacía inicialmente', async () => {
-    const res = await request(app).get('/api/concesionarias');
+    const res = await request(app).get('/api/concesionarias').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual([]);
   });
@@ -19,7 +30,7 @@ describe('API de Concesionarias', () => {
       gerente: 'Carlos Mendoza'
     };
 
-    const res = await request(app).post('/api/concesionarias').send(nuevaConcesionaria);
+    const res = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(nuevaConcesionaria);
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('id');
@@ -30,7 +41,7 @@ describe('API de Concesionarias', () => {
 
   // POST: datos inválidos
   test('POST /api/concesionarias debería rechazar datos incompletos', async () => {
-    const res = await request(app).post('/api/concesionarias').send({ nombre: 'AutoPlaza' });
+    const res = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send({ nombre: 'AutoPlaza' });
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'Nombre, Dirección, Teléfono, Ciudad y Gerente son requeridos');
   });
@@ -45,11 +56,11 @@ describe('API de Concesionarias', () => {
       gerente: 'María González'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id}`)
+      .put(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ telefono: '029999999' });
 
     expect(actualizado.statusCode).toBe(200);
@@ -66,14 +77,14 @@ describe('API de Concesionarias', () => {
       gerente: 'Jorge Ramírez'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
-    const eliminado = await request(app).delete(`/api/concesionarias/${id}`);
+    const eliminado = await request(app).delete(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`);
     expect(eliminado.statusCode).toBe(200);
     expect(eliminado.body.nombre).toBe('MotorCenter');
 
-    const res = await request(app).get('/api/concesionarias');
+    const res = await request(app).get('/api/concesionarias').set('Authorization', `Bearer ${token}`);
     expect(res.body.find(c => c.id === id)).toBeUndefined();
   });
 
@@ -81,7 +92,7 @@ describe('API de Concesionarias', () => {
   test('PUT /api/concesionarias/:id debería retornar 404 si la concesionaria no existe', async () => {
     const idInexistente = 999999;
     const res = await request(app)
-      .put(`/api/concesionarias/${idInexistente}`)
+      .put(`/api/concesionarias/${idInexistente}`).set('Authorization', `Bearer ${token}`)
       .send({ telefono: '029999999' });
 
     expect(res.statusCode).toBe(404);
@@ -91,7 +102,7 @@ describe('API de Concesionarias', () => {
   // EDGE CASE: Eliminar concesionaria que no existe
   test('DELETE /api/concesionarias/:id debería retornar 404 si la concesionaria no existe', async () => {
     const idInexistente = 999999;
-    const res = await request(app).delete(`/api/concesionarias/${idInexistente}`);
+    const res = await request(app).delete(`/api/concesionarias/${idInexistente}`).set('Authorization', `Bearer ${token}`);
 
     expect(res.statusCode).toBe(404);
     expect(res.body).toHaveProperty('message', 'Concesionaria no encontrada');
@@ -107,11 +118,11 @@ describe('API de Concesionarias', () => {
       gerente: 'Ana Torres'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id}`)
+      .put(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ ciudad: 'Ambato' });
 
     expect(actualizado.statusCode).toBe(200);
@@ -130,7 +141,7 @@ describe('API de Concesionarias', () => {
       gerente: 'Pedro López'
     };
 
-    const res = await request(app).post('/api/concesionarias').send(concesionariaInvalida);
+    const res = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionariaInvalida);
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'Los campos no pueden estar vacíos o contener solo espacios');
   });
@@ -145,11 +156,11 @@ describe('API de Concesionarias', () => {
       gerente: 'Roberto García'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id}`)
+      .put(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ gerente: 'Patricia Morales' });
 
     expect(actualizado.statusCode).toBe(200);
@@ -167,11 +178,11 @@ describe('API de Concesionarias', () => {
       gerente: 'Luis Hernández'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id}`)
+      .put(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ 
         direccion: 'Av. Nueva 333',
         ciudad: 'Santo Domingo',
@@ -195,11 +206,11 @@ describe('API de Concesionarias', () => {
       gerente: 'Fernando Silva'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id}`)
+      .put(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ 
         nombre: 'AutosEcuador Premium'
       });
@@ -227,8 +238,8 @@ describe('API de Concesionarias', () => {
       gerente: 'Gerente 2'
     };
 
-    await request(app).post('/api/concesionarias').send(concesionaria1);
-    const res = await request(app).post('/api/concesionarias').send(concesionaria2);
+    await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria1);
+    const res = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria2);
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'Ya existe una concesionaria con ese nombre');
@@ -252,8 +263,8 @@ describe('API de Concesionarias', () => {
       gerente: 'Gerente 2'
     };
 
-    await request(app).post('/api/concesionarias').send(concesionaria1);
-    const res = await request(app).post('/api/concesionarias').send(concesionaria2);
+    await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria1);
+    const res = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria2);
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty('message', 'Ya existe una concesionaria con ese nombre');
@@ -277,12 +288,12 @@ describe('API de Concesionarias', () => {
       gerente: 'Gerente 2'
     };
 
-    await request(app).post('/api/concesionarias').send(concesionaria1);
-    const creado2 = await request(app).post('/api/concesionarias').send(concesionaria2);
+    await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria1);
+    const creado2 = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria2);
     const id2 = creado2.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id2}`)
+      .put(`/api/concesionarias/${id2}`).set('Authorization', `Bearer ${token}`)
       .send({ nombre: 'Concesionaria Uno' });
 
     expect(actualizado.statusCode).toBe(400);
@@ -299,11 +310,11 @@ describe('API de Concesionarias', () => {
       gerente: 'Gerente Original'
     };
 
-    const creado = await request(app).post('/api/concesionarias').send(concesionaria);
+    const creado = await request(app).post('/api/concesionarias').set('Authorization', `Bearer ${token}`).send(concesionaria);
     const id = creado.body.id;
 
     const actualizado = await request(app)
-      .put(`/api/concesionarias/${id}`)
+      .put(`/api/concesionarias/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ 
         nombre: 'Concesionaria Original',
         gerente: 'Gerente Modificado'
@@ -314,3 +325,4 @@ describe('API de Concesionarias', () => {
     expect(actualizado.body.gerente).toBe('Gerente Modificado');
   });
 });
+

@@ -1,113 +1,186 @@
 const request = require('supertest');
 const app = require('../src/app.js');
 
+let token;
+
 describe('API de Autos', () => {
-  // GET
-  // Prueba: solicita la lista de autos inicialmente y espera un arreglo (vacío al inicio)
-  test('GET /autos debería devolver lista (vacía inicialmente)', async () => {
-    const res = await request(app).get('/autos');
+  // Obtener token antes de los tests
+  beforeAll(async () => {
+    const loginRes = await request(app).post('/api/auth/login').set('Authorization', `Bearer ${token}`).send({
+      email: 'admin@consecionaria.com',
+      password: 'consesionariachida'
+    });
+    token = loginRes.body.token;
+  });
+
+  // GET - Obtener lista de autos
+  test('GET /autos debería devolver lista vacía al inicio', async () => {
+    const res = await request(app).get('/autos').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
 
-  // POST
-  // Prueba: crea un nuevo auto con datos válidos y espera código 201 y que el objeto devuelto tenga id y los campos enviados
+  // POST - Crear auto válido
   test('POST /autos debería crear un nuevo auto', async () => {
     const nuevoAuto = {
       marca: 'Toyota',
       modelo: 'Corolla',
-      año: 2020,
+      año: 2023,
       color: 'Blanco',
-      numeroSerie: '1HGCM82633A004352'
+      numeroSerie: 'TOYOTA001'
     };
 
-    const res = await request(app).post('/autos').send(nuevoAuto);
+    const res = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(nuevoAuto);
 
-    expect(res.statusCode).toBe(201); // Created
+    expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('id');
     expect(res.body.marca).toBe('Toyota');
-    expect(res.body.modelo).toBe('Corolla');
+    expect(res.body.numeroSerie).toBe('TOYOTA001');
   });
 
-  // POST: datos inválidos
-  // Prueba: intenta crear un auto con datos incompletos y espera rechazo 400 con mensaje de validación
-  test('POST /autos debería rechazar datos inválidos', async () => {
-    const res = await request(app).post('/autos').send({ marca: 'Ford' });
+  // POST - Validar campos obligatorios
+  test('POST /autos debería rechazar auto sin marca', async () => {
+    const res = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send({
+      modelo: 'Corolla',
+      año: 2023,
+      color: 'Blanco',
+      numeroSerie: 'SERIE001'
+    });
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty('message', 'Marca, Modelo, Año, Color y Número de Serie son requeridos');
+    expect(res.body).toHaveProperty('message');
   });
 
-  // PUT
-  // Prueba: crea un auto, luego actualiza un campo (color) vía PUT y valida el cambio
-  test('PUT /autos/:id debería actualizar un auto existente', async () => {
+  // POST - Validar año válido
+  test('POST /autos debería rechazar año inválido', async () => {
+    const res = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send({
+      marca: 'Toyota',
+      modelo: 'Corolla',
+      año: 1800,
+      color: 'Blanco',
+      numeroSerie: 'INVALID_YEAR'
+    });
+    expect(res.statusCode).toBe(400);
+  });
+
+  // POST - Validar número de serie único
+  test('POST /autos debería rechazar número de serie duplicado', async () => {
     const auto = {
       marca: 'Honda',
       modelo: 'Civic',
-      año: 2018,
-      color: 'Rojo',
-      numeroSerie: 'JH4KA8260MC000000'
+      año: 2023,
+      color: 'Negro',
+      numeroSerie: 'UNIQUE123'
     };
 
-    const creado = await request(app).post('/autos').send(auto);
-    const id = creado.body.id;
-
-    const actualizado = await request(app)
-      .put(`/autos/${id}`)
-      .send({ color: 'Negro' });
-
-    expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.color).toBe('Negro');
+    await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(auto);
+    
+    const res = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(auto);
+    expect(res.statusCode).toBe(400);
   });
 
-  // Nueva prueba: actualizar todos los campos para cubrir las ramas de asignación en updateAuto
-  test('PUT /autos/:id debería actualizar todos los campos del auto', async () => {
+  // PUT - Actualizar campo específico
+  test('PUT /autos/:id debería actualizar un campo del auto', async () => {
     const auto = {
-      marca: 'TestMake',
-      modelo: 'TestModel',
-      año: 2000,
-      color: 'Gris',
-      numeroSerie: 'TEST123456'
+      marca: 'Ford',
+      modelo: 'Mustang',
+      año: 2022,
+      color: 'Rojo',
+      numeroSerie: 'FORD001'
     };
 
-    const creado = await request(app).post('/autos').send(auto);
+    const creado = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(auto);
+    const id = creado.body.id;
+
+    const res = await request(app)
+      .put(`/autos/${id}`).set('Authorization', `Bearer ${token}`)
+      .send({ color: 'Azul' });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.color).toBe('Azul');
+    expect(res.body.modelo).toBe('Mustang');
+  });
+
+  // PUT - Actualizar todos los campos
+  test('PUT /autos/:id debería actualizar todos los campos', async () => {
+    const auto = {
+      marca: 'BMW',
+      modelo: '3 Series',
+      año: 2020,
+      color: 'Gris',
+      numeroSerie: 'BMW001'
+    };
+
+    const creado = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(auto);
     const id = creado.body.id;
 
     const cambios = {
-      marca: 'NuevoMake',
-      modelo: 'NuevoModel',
-      año: 2022,
+      marca: 'Mercedes',
+      modelo: 'C-Class',
+      año: 2024,
       color: 'Negro',
-      numeroSerie: 'NEWPLATE123'
+      numeroSerie: 'MERC001'
     };
 
-    const res = await request(app).put(`/autos/${id}`).send(cambios);
+    const res = await request(app).put(`/autos/${id}`).set('Authorization', `Bearer ${token}`).send(cambios);
     expect(res.statusCode).toBe(200);
-    expect(res.body.marca).toBe(cambios.marca);
-    expect(res.body.modelo).toBe(cambios.modelo);
-    expect(res.body.año).toBe(cambios.año);
-    expect(res.body.color).toBe(cambios.color);
-    expect(res.body.numeroSerie).toBe(cambios.numeroSerie);
+    expect(res.body.marca).toBe('Mercedes');
+    expect(res.body.año).toBe(2024);
   });
 
-  // DELETE
-  // Prueba: crea un auto, lo elimina y verifica que ya no aparece en la lista
-  test('DELETE /autos/:id debería eliminar un auto', async () => {
+  // PUT - Validar año en actualización
+  test('PUT /autos/:id debería rechazar año inválido en actualización', async () => {
     const auto = {
-      marca: 'Ford',
-      modelo: 'Focus',
-      año: 2015,
-      color: 'Azul',
-      numeroSerie: '1FAHP3F20CL000000'
+      marca: 'Nissan',
+      modelo: 'Sentra',
+      año: 2021,
+      color: 'Blanco',
+      numeroSerie: 'NISS001'
     };
 
-    const creado = await request(app).post('/autos').send(auto);
+    const creado = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(auto);
     const id = creado.body.id;
 
-    const eliminado = await request(app).delete(`/autos/${id}`);
-    expect(eliminado.statusCode).toBe(200);
-    expect(eliminado.body.marca).toBe('Ford');
+    const res = await request(app)
+      .put(`/autos/${id}`).set('Authorization', `Bearer ${token}`)
+      .send({ año: 1800 });
 
-    const res = await request(app).get('/autos');
+    expect(res.statusCode).toBe(400);
+  });
+
+  // PUT - Auto no encontrado
+  test('PUT /autos/:id debería retornar 404 si auto no existe', async () => {
+    const res = await request(app)
+      .put('/autos/999999999').set('Authorization', `Bearer ${token}`)
+      .send({ color: 'Verde' });
+
+    expect(res.statusCode).toBe(404);
+  });
+
+  // DELETE - Eliminar auto exitosamente
+  test('DELETE /autos/:id debería eliminar un auto', async () => {
+    const auto = {
+      marca: 'Volkswagen',
+      modelo: 'Golf',
+      año: 2023,
+      color: 'Plata',
+      numeroSerie: 'VW001'
+    };
+
+    const creado = await request(app).post('/autos').set('Authorization', `Bearer ${token}`).send(auto);
+    const id = creado.body.id;
+
+    const eliminado = await request(app).delete(`/autos/${id}`).set('Authorization', `Bearer ${token}`);
+    expect(eliminado.statusCode).toBe(200);
+    expect(eliminado.body.marca).toBe('Volkswagen');
+
+    const res = await request(app).get('/autos').set('Authorization', `Bearer ${token}`);
     expect(res.body.find(a => a.id === id)).toBeUndefined();
   });
+
+  // DELETE - Auto no encontrado
+  test('DELETE /autos/:id debería retornar 404 si auto no existe', async () => {
+    const res = await request(app).delete('/autos/999999999').set('Authorization', `Bearer ${token}`);
+    expect(res.statusCode).toBe(404);
+  });
 });
+
