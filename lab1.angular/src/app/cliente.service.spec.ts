@@ -97,4 +97,35 @@ describe('Servicio de Clientes', () => {
         expect(req.request.method).toBe('DELETE');
         req.flush({});
     });
+
+    it('debería manejar error del backend cuando se intenta agregar un cliente con nombre vacío', () => {
+        const newCliente = new Cliente('', 'juan@test.com');
+
+        service.addCliente(newCliente).subscribe({
+            next: () => fail('Debería haber fallado con error 400'),
+            error: (error) => {
+                expect(error.status).toBe(400);
+            }
+        });
+
+        const req = httpMock.expectOne('http://localhost:3000/api/clientes');
+        expect(req.request.method).toBe('POST');
+        req.flush('Nombre requerido', { status: 400, statusText: 'Bad Request' });
+    });
+
+    it('debería manejar error del backend cuando se intenta actualizar un cliente con email inválido', () => {
+        const updatedCliente = new Cliente('Juan', 'invalid-email');
+        updatedCliente.id = 1;
+
+        service.updateCliente(updatedCliente).subscribe({
+            next: () => fail('Debería haber fallado con error 400'),
+            error: (error) => {
+                expect(error.status).toBe(400);
+            }
+        });
+
+        const req = httpMock.expectOne('http://localhost:3000/api/clientes/1');
+        expect(req.request.method).toBe('PUT');
+        req.flush('Email inválido', { status: 400, statusText: 'Bad Request' });
+    });
 });
