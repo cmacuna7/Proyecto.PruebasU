@@ -2,11 +2,24 @@
 const API_URL = "http://localhost:3000/api/vendedores";
 
 /**
+ * Obtener headers de autenticación
+ */
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+};
+
+/**
  * Obtener todos los vendedores
  */
 export const obtenerTodosLosVendedores = async () => {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+      headers: getAuthHeaders()
+    });
     if (!response.ok) {
       throw new Error("Error al obtener vendedores");
     }
@@ -24,9 +37,7 @@ export const crearVendedor = async (vendedor) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(vendedor),
     });
     if (!response.ok) {
@@ -46,9 +57,7 @@ export const actualizarVendedor = async (id, vendedor) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(vendedor),
     });
     if (!response.ok) {
@@ -68,6 +77,7 @@ export const eliminarVendedor = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
+      headers: getAuthHeaders()
     });
     if (!response.ok) {
       throw new Error("Error al eliminar el vendedor");

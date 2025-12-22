@@ -15,7 +15,7 @@ export class ClienteService {
         return this.http.get<Cliente[]>(this.apiUrl);
     }
 
-    getCliente(id: number): Observable<Cliente> {
+    getCliente(id: string): Observable<Cliente> {
         return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
     }
 
@@ -24,10 +24,10 @@ export class ClienteService {
     }
 
     updateCliente(cliente: Cliente): Observable<Cliente> {
-        return this.http.put<Cliente>(`${this.apiUrl}/${cliente.id}`, cliente);
+        return this.http.put<Cliente>(`${this.apiUrl}/${cliente._id}`, cliente);
     }
 
-    deleteCliente(id: number): Observable<any> {
+    deleteCliente(id: string): Observable<any> {
         return this.http.delete(`${this.apiUrl}/${id}`);
     }
 }

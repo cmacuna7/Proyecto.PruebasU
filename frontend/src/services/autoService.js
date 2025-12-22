@@ -2,11 +2,24 @@
 const API_URL = "http://localhost:3000/api/autos";
 
 /**
+ * Obtener headers de autenticación
+ */
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+};
+
+/**
  * Obtener todos los autos
  */
 export const obtenerTodosLosAutos = async () => {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+      headers: getAuthHeaders()
+    });
     if (!response.ok) {
       throw new Error("Error al obtener autos");
     }
@@ -24,9 +37,7 @@ export const crearAuto = async (auto) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(auto),
     });
     if (!response.ok) {
@@ -47,9 +58,7 @@ export const actualizarAuto = async (id, auto) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(auto),
     });
     if (!response.ok) {
@@ -70,6 +79,7 @@ export const eliminarAuto = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
+      headers: getAuthHeaders()
     });
     if (!response.ok) {
       const errorData = await response.json();

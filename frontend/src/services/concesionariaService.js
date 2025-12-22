@@ -2,11 +2,24 @@
 const API_URL = "http://localhost:3000/api/concesionarias";
 
 /**
+ * Obtener headers de autenticación
+ */
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  };
+};
+
+/**
  * Obtener todas las concesionarias
  */
 export const obtenerTodasLasConcesionarias = async () => {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, {
+      headers: getAuthHeaders()
+    });
     if (!response.ok) {
       throw new Error("Error al obtener concesionarias");
     }
@@ -24,9 +37,7 @@ export const crearConcesionaria = async (concesionaria) => {
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(concesionaria),
     });
     if (!response.ok) {
@@ -46,9 +57,7 @@ export const actualizarConcesionaria = async (id, concesionaria) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(concesionaria),
     });
     if (!response.ok) {
@@ -68,6 +77,7 @@ export const eliminarConcesionaria = async (id) => {
   try {
     const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
+      headers: getAuthHeaders()
     });
     if (!response.ok) {
       throw new Error("Error al eliminar la concesionaria");

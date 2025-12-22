@@ -15,7 +15,7 @@ export class VendedorService {
     return this.http.get<Vendedor[]>(this.baseUrl);
   }
 
-  getVendedor(id: number): Observable<Vendedor> {
+  getVendedor(id: string): Observable<Vendedor> {
     return this.http.get<Vendedor>(`${this.baseUrl}/${id}`);
   }
 
@@ -24,10 +24,10 @@ export class VendedorService {
   }
 
   updateVendedor(v: Vendedor): Observable<Vendedor> {
-    return this.http.put<Vendedor>(`${this.baseUrl}/${v.id}`, v);
+    return this.http.put<Vendedor>(`${this.baseUrl}/${v._id}`, v);
   }
 
-  deleteVendedor(id: number): Observable<any> {
+  deleteVendedor(id: string): Observable<any> {
     return this.http.delete<any>(`${this.baseUrl}/${id}`);
   }
 }
