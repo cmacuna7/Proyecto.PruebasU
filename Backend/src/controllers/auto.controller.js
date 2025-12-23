@@ -14,6 +14,14 @@ function getAllAutos(req, res) {
     res.json(autos);
 }
 
+// GET - Obtener auto por ID
+function getAutoById(req, res) {
+    const { id } = req.params;
+    const auto = autos.find(a => a.id === Number(id));
+    if (!auto) return res.status(404).json({ message: 'Auto no encontrado' });
+    res.json(auto);
+}
+
 // POST - Crear nuevo auto
 function addNewAuto(req, res) {
     const { marca, modelo, año, color, numeroSerie } = req.body;
@@ -101,4 +109,4 @@ function _clearAutos() {
     autos.length = 0;
 }
 
-module.exports = { getAllAutos, addNewAuto, updateAuto, deleteAuto, _clearAutos };
+module.exports = { getAllAutos, getAutoById, addNewAuto, updateAuto, deleteAuto, _clearAutos };

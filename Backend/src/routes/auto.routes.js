@@ -1,10 +1,13 @@
 const express = require('express');
-const { getAllAutos, addNewAuto, updateAuto, deleteAuto } = require('../controllers/auto.controller');
+const { getAllAutos, getAutoById, addNewAuto, updateAuto, deleteAuto } = require('../controllers/auto.controller');
 
 const router = express.Router();
 
 // Ruta GET para obtener todos los autos
 router.get('/', getAllAutos);
+
+// Ruta GET para obtener un auto por ID
+router.get('/:id', getAutoById);
 
 // Ruta POST para crear un nuevo auto
 router.post('/', addNewAuto);
