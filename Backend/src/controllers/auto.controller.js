@@ -53,7 +53,10 @@ function addNewAuto(req, res) {
     };
 
     autos.push(newAuto);
-    res.status(201).json(newAuto);
+    res.status(201).json({ 
+        message: 'Auto creado exitosamente', 
+        data: newAuto 
+    });
 }
 
 // PUT - Actualizar auto existente
@@ -88,7 +91,10 @@ function updateAuto(req, res) {
     if (modelo !== undefined) autos[i].modelo = String(modelo).trim();
     if (color !== undefined) autos[i].color = String(color).trim();
 
-    res.json(autos[i]);
+    res.json({ 
+        message: 'Auto actualizado exitosamente', 
+        data: autos[i] 
+    });
 }
 
 // DELETE - Eliminar auto
@@ -101,7 +107,10 @@ function deleteAuto(req, res) {
 
     const deleted = autos.splice(index, 1);
 
-    res.json(deleted[0]);
+    res.json({ 
+        message: 'Auto eliminado exitosamente', 
+        data: deleted[0] 
+    });
 }
 
 // Helper de pruebas: limpia el arreglo de autos 
