@@ -89,4 +89,4 @@ function deleteCliente(req, res) {
     res.json({ message: 'Cliente eliminado exitosamente', cliente: deleted[0] });
 }
 
-module.exports = { getAllClientes, addNewCliente, updateCliente, deleteCliente };
+module.exports = { getAllClientes, addNewCliente, updateCliente, deleteCliente, getClienteById };

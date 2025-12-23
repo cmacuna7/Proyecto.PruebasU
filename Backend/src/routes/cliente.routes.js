@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllClientes, addNewCliente, updateCliente, deleteCliente } = require('../controllers/cliente.controller');
+const { getAllClientes, addNewCliente, getClienteById, updateCliente, deleteCliente } = require('../controllers/cliente.controller');
 
 const router = express.Router();
 
