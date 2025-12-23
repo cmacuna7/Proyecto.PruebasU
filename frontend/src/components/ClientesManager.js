@@ -23,7 +23,14 @@ function ClientesManager() {
     setError(null);
     try {
       const data = await obtenerTodosLosClientes();
-      setClientes(Array.isArray(data) ? data : []);
+      // El backend devuelve { message: "...", clientes: [...] }
+      if (data.clientes && Array.isArray(data.clientes)) {
+        setClientes(data.clientes);
+      } else if (Array.isArray(data)) {
+        setClientes(data);
+      } else {
+        setClientes([]);
+      }
     } catch (err) {
       setError(err.message || "Error al cargar clientes");
     } finally {

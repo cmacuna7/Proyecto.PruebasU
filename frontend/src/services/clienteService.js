@@ -21,7 +21,8 @@ export const obtenerTodosLosClientes = async () => {
       headers: getAuthHeaders()
     });
     if (!response.ok) {
-      throw new Error("Error al obtener clientes");
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Error al obtener clientes");
     }
     return await response.json();
   } catch (error) {
@@ -41,7 +42,8 @@ export const crearCliente = async (cliente) => {
       body: JSON.stringify(cliente),
     });
     if (!response.ok) {
-      throw new Error("Error al crear el cliente");
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Error al crear el cliente");
     }
     return await response.json();
   } catch (error) {
@@ -61,7 +63,8 @@ export const actualizarCliente = async (id, cliente) => {
       body: JSON.stringify(cliente),
     });
     if (!response.ok) {
-      throw new Error("Error al actualizar el cliente");
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Error al actualizar el cliente");
     }
     return await response.json();
   } catch (error) {
@@ -80,7 +83,8 @@ export const eliminarCliente = async (id) => {
       headers: getAuthHeaders()
     });
     if (!response.ok) {
-      throw new Error("Error al eliminar el cliente");
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Error al eliminar el cliente");
     }
     return await response.json();
   } catch (error) {
