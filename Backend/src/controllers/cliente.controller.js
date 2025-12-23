@@ -4,6 +4,13 @@ function getAllClientes(req, res) {
     res.json({ message: 'Clientes obtenidos exitosamente', clientes });
 }
 
+function getClienteById(req, res) {
+    const { id } = req.params;
+    const cliente = clientes.find(c => c.id == id);
+    if (!cliente) return res.status(404).json({ message: 'Cliente no encontrado' });
+    res.json({ message: 'Cliente obtenido exitosamente', cliente });
+}
+
 function validateClienteData(data, clienteId = null) {
     const { nombre, email, telefono, direccion, ciudad } = data;
 
