@@ -1,0 +1,348 @@
+﻿
+> laboratorio1@0.0.0 test
+> ng test
+
+[33mΓ¥»[39m Building...
+[32mΓ£ö[39m Building...
+[1mInitial chunk files[22m                   [2m | [22m[1mNames[22m                              [2m | [22m [1mRaw size[22m
+[32mchunk-H3KBRXWJ.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m2.27 MB[39m[2m | [22m
+[32mpolyfills.js[39m                          [2m | [22m[2mpolyfills[22m                          [2m | [22m  [36m1.04 MB[39m[2m | [22m
+[32mspec-app.spec.js[39m                      [2m | [22m[2mspec-app.spec[22m                      [2m | [22m[36m259.89 kB[39m[2m | [22m
+[32mspec-cliente-manager.component.spec.js[39m[2m | [22m[2mspec-cliente-manager.component.spec[22m[2m | [22m[36m249.56 kB[39m[2m | [22m
+[32mchunk-MGLCZJAX.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m197.60 kB[39m[2m | [22m
+[32mchunk-J66GVLLX.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m96.31 kB[39m[2m | [22m
+[32mjasmine-cleanup-1.js[39m                  [2m | [22m[2mjasmine-cleanup-1[22m                  [2m | [22m [36m67.20 kB[39m[2m | [22m
+[32mchunk-P3ZQIA2L.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m43.45 kB[39m[2m | [22m
+[32mtest_main.js[39m                          [2m | [22m[2mtest_main[22m                          [2m | [22m [36m21.90 kB[39m[2m | [22m
+[32mchunk-QJHQZUO7.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m [36m12.24 kB[39m[2m | [22m
+[32mspec-vendedor.service.spec.js[39m         [2m | [22m[2mspec-vendedor.service.spec[22m         [2m | [22m  [36m9.22 kB[39m[2m | [22m
+[32mspec-vendor.service.spec.js[39m           [2m | [22m[2mspec-vendor.service.spec[22m           [2m | [22m  [36m5.01 kB[39m[2m | [22m
+[32mspec-cliente.service.spec.js[39m          [2m | [22m[2mspec-cliente.service.spec[22m          [2m | [22m  [36m4.49 kB[39m[2m | [22m
+[32mspec-auto.service.spec.js[39m             [2m | [22m[2mspec-auto.service.spec[22m             [2m | [22m  [36m4.07 kB[39m[2m | [22m
+[32mspec-auth.service.spec.js[39m             [2m | [22m[2mspec-auth.service.spec[22m             [2m | [22m  [36m3.08 kB[39m[2m | [22m
+[32mchunk-TTULUY32.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.99 kB[39m[2m | [22m
+[32mchunk-PNRSBHEP.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m  [36m1.84 kB[39m[2m | [22m
+[32mchunk-5LVQ6JZI.js[39m                     [2m | [22m[2m-[22m                                  [2m | [22m[36m936 bytes[39m[2m | [22m
+[32mjasmine-cleanup-0.js[39m                  [2m | [22m[2mjasmine-cleanup-0[22m                  [2m | [22m[36m519 bytes[39m[2m | [22m
+[32mstyles.css[39m                            [2m | [22m[2mstyles[22m                             [2m | [22m [36m95 bytes[39m[2m | [22m
+
+[1m [22m                                     [2m | [22m[1mInitial total[22m                      [2m | [22m  [1m4.28 MB[22m
+
+Application bundle generation complete. [2.233 seconds] - 2025-12-23T18:19:52.308Z
+
+Watch mode enabled. Watching for file changes...
+[33m23 12 2025 13:19:52.679:WARN [karma]: [39mNo captured browser, open http://localhost:9877/
+[32m23 12 2025 13:19:52.729:INFO [karma-server]: [39mKarma v6.4.4 server started at http://localhost:9877/
+[32m23 12 2025 13:19:52.730:INFO [launcher]: [39mLaunching browsers Chrome with concurrency unlimited
+[32m23 12 2025 13:19:52.746:INFO [launcher]: [39mStarting browser Chrome
+[32m23 12 2025 13:19:54.180:INFO [Chrome 143.0.0.0 (Windows 10)]: [39mConnected on socket 7KJoxdPA6Er7Oxd0AAAB with id 52096367
+Chrome 143.0.0.0 (Windows 10): Executed 0 of 68[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 1 of 68[32m SUCCESS[39m (0 secs / 0.003 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 2 of 68[32m SUCCESS[39m (0 secs / 0.004 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 3 of 68[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 4 of 68[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 5 of 68[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 6 of 68[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 7 of 68[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 8 of 68[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 9 of 68[32m SUCCESS[39m (0 secs / 0.006 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 10 of 68[32m SUCCESS[39m (0 secs / 0.006 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 11 of 68[32m SUCCESS[39m (0 secs / 0.006 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 12 of 68[32m SUCCESS[39m (0 secs / 0.006 secs)
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) App should render title FAILED[39m
+	Expected undefined to contain 'Laboratiorio1!'.
+	    at <Jasmine>
+	    at src/app/app.spec.ts:31:55
+	    at Generator.next (<anonymous>)
+	    at fulfilled (chunk-TTULUY32.js:35:24)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:398:28)
+Chrome 143.0.0.0 (Windows 10): Executed 13 of 68[31m (1 FAILED)[39m (0 secs / 0.041 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 14 of 68[31m (1 FAILED)[39m (0 secs / 0.045 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 15 of 68[31m (1 FAILED)[39m (0 secs / 0.05 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 16 of 68[31m (1 FAILED)[39m (0 secs / 0.052 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 17 of 68[31m (1 FAILED)[39m (0 secs / 0.054 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 18 of 68[31m (1 FAILED)[39m (0 secs / 0.057 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 19 of 68[31m (1 FAILED)[39m (0 secs / 0.059 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 20 of 68[31m (1 FAILED)[39m (0 secs / 0.06 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 21 of 68[31m (1 FAILED)[39m (0 secs / 0.062 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 22 of 68[31m (1 FAILED)[39m (0 secs / 0.064 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 23 of 68[31m (1 FAILED)[39m (0 secs / 0.065 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 24 of 68[31m (1 FAILED)[39m (0 secs / 0.066 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 25 of 68[31m (1 FAILED)[39m (0 secs / 0.068 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 26 of 68[31m (1 FAILED)[39m (0 secs / 0.069 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 27 of 68[31m (1 FAILED)[39m (0 secs / 0.071 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 28 of 68[31m (1 FAILED)[39m (0 secs / 0.072 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 29 of 68[31m (1 FAILED)[39m (0 secs / 0.073 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 30 of 68[31m (1 FAILED)[39m (0 secs / 0.074 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 31 of 68[31m (1 FAILED)[39m (0 secs / 0.075 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 32 of 68[31m (1 FAILED)[39m (0 secs / 0.076 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 33 of 68[31m (1 FAILED)[39m (0 secs / 0.077 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 34 of 68[31m (1 FAILED)[39m (0 secs / 0.078 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 35 of 68[31m (1 FAILED)[39m (0 secs / 0.079 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 36 of 68[31m (1 FAILED)[39m (0 secs / 0.08 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 37 of 68[31m (1 FAILED)[39m (0 secs / 0.082 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 38 of 68[31m (1 FAILED)[39m (0 secs / 0.083 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 39 of 68[31m (1 FAILED)[39m (0 secs / 0.084 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 40 of 68[31m (1 FAILED)[39m (0 secs / 0.086 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 41 of 68[31m (1 FAILED)[39m (0 secs / 0.087 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 42 of 68[31m (1 FAILED)[39m (0 secs / 0.088 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 43 of 68[31m (1 FAILED)[39m (0 secs / 0.09 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 44 of 68[31m (1 FAILED)[39m (0 secs / 0.091 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 45 of 68[31m (1 FAILED)[39m (0 secs / 0.104 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 46 of 68[31m (1 FAILED)[39m (0 secs / 0.104 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 47 of 68[31m (1 FAILED)[39m (0 secs / 0.104 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 48 of 68[31m (1 FAILED)[39m (0 secs / 0.104 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 49 of 68[31m (1 FAILED)[39m (0 secs / 0.104 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 50 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 51 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 52 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 53 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 54 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 55 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 56 of 68[31m (1 FAILED)[39m (0 secs / 0.105 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 57 of 68[31m (1 FAILED)[39m (0 secs / 0.135 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 58 of 68[31m (1 FAILED)[39m (0 secs / 0.141 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 59 of 68[31m (1 FAILED)[39m (0 secs / 0.148 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 60 of 68[31m (1 FAILED)[39m (0 secs / 0.154 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 61 of 68[31m (1 FAILED)[39m (0 secs / 0.16 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 62 of 68[31m (1 FAILED)[39m (0 secs / 0.166 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 63 of 68[31m (1 FAILED)[39m (0 secs / 0.171 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 64 of 68[31m (1 FAILED)[39m (0 secs / 0.176 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 65 of 68[31m (1 FAILED)[39m (0 secs / 0.181 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 66 of 68[31m (1 FAILED)[39m (0 secs / 0.186 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 68[31m (1 FAILED)[39m (0 secs / 0.191 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 68 of 68[31m (1 FAILED)[39m (0 secs / 0.196 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 68 of 68[31m (1 FAILED)[39m (0.258 secs / 0.196 secs)
+[31mTOTAL: 1 FAILED, 67 SUCCESS[39m
+[33mΓ¥»[39m Changes detected. Rebuilding...
+[32mΓ£ö[39m Changes detected. Rebuilding...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m        [2m | [22m [1mRaw size[22m
+[32mspec-app.spec.js[39m   [2m | [22m[2mspec-app.spec[22m[2m | [22m[36m259.55 kB[39m[2m | [22m
+
+Application bundle generation complete. [0.449 seconds] - 2025-12-23T18:20:22.065Z
+
+Chrome 143.0.0.0 (Windows 10): Executed 0 of 67[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 1 of 67[32m SUCCESS[39m (0 secs / 0.001 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 2 of 67[32m SUCCESS[39m (0 secs / 0.001 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 3 of 67[32m SUCCESS[39m (0 secs / 0.001 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 4 of 67[32m SUCCESS[39m (0 secs / 0.001 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 5 of 67[32m SUCCESS[39m (0 secs / 0.002 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 6 of 67[32m SUCCESS[39m (0 secs / 0.003 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 7 of 67[32m SUCCESS[39m (0 secs / 0.003 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 8 of 67[32m SUCCESS[39m (0 secs / 0.004 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 9 of 67[32m SUCCESS[39m (0 secs / 0.004 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 10 of 67[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 11 of 67[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 12 of 67[32m SUCCESS[39m (0 secs / 0.005 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 13 of 67[32m SUCCESS[39m (0 secs / 0.021 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 14 of 67[32m SUCCESS[39m (0 secs / 0.042 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 15 of 67[32m SUCCESS[39m (0 secs / 0.048 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 16 of 67[32m SUCCESS[39m (0 secs / 0.053 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 17 of 67[32m SUCCESS[39m (0 secs / 0.058 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 18 of 67[32m SUCCESS[39m (0 secs / 0.063 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 19 of 67[32m SUCCESS[39m (0 secs / 0.067 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 20 of 67[32m SUCCESS[39m (0 secs / 0.071 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 21 of 67[32m SUCCESS[39m (0 secs / 0.074 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 22 of 67[32m SUCCESS[39m (0 secs / 0.078 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 23 of 67[32m SUCCESS[39m (0 secs / 0.082 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 24 of 67[32m SUCCESS[39m (0 secs / 0.087 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 25 of 67[32m SUCCESS[39m (0 secs / 0.091 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 26 of 67[32m SUCCESS[39m (0 secs / 0.093 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 27 of 67[32m SUCCESS[39m (0 secs / 0.094 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 28 of 67[32m SUCCESS[39m (0 secs / 0.095 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 29 of 67[32m SUCCESS[39m (0 secs / 0.096 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 30 of 67[32m SUCCESS[39m (0 secs / 0.097 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 31 of 67[32m SUCCESS[39m (0 secs / 0.098 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 32 of 67[32m SUCCESS[39m (0 secs / 0.099 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 33 of 67[32m SUCCESS[39m (0 secs / 0.1 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 34 of 67[32m SUCCESS[39m (0 secs / 0.112 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 35 of 67[32m SUCCESS[39m (0 secs / 0.113 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 36 of 67[32m SUCCESS[39m (0 secs / 0.113 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 37 of 67[32m SUCCESS[39m (0 secs / 0.114 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 38 of 67[32m SUCCESS[39m (0 secs / 0.115 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 39 of 67[32m SUCCESS[39m (0 secs / 0.116 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 40 of 67[32m SUCCESS[39m (0 secs / 0.117 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 41 of 67[32m SUCCESS[39m (0 secs / 0.118 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 42 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 43 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 44 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 45 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 46 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 47 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 48 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 49 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 50 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 51 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 52 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 53 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 54 of 67[32m SUCCESS[39m (0 secs / 0.12 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 55 of 67[32m SUCCESS[39m (0 secs / 0.121 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 56 of 67[32m SUCCESS[39m (0 secs / 0.122 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 57 of 67[32m SUCCESS[39m (0 secs / 0.123 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 58 of 67[32m SUCCESS[39m (0 secs / 0.124 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 59 of 67[32m SUCCESS[39m (0 secs / 0.125 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 60 of 67[32m SUCCESS[39m (0 secs / 0.127 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 61 of 67[32m SUCCESS[39m (0 secs / 0.128 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 62 of 67[32m SUCCESS[39m (0 secs / 0.129 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 63 of 67[32m SUCCESS[39m (0 secs / 0.13 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 64 of 67[32m SUCCESS[39m (0 secs / 0.131 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 65 of 67[32m SUCCESS[39m (0 secs / 0.132 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 66 of 67[32m SUCCESS[39m (0 secs / 0.133 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0 secs / 0.134 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.18 secs / 0.134 secs)
+[32mTOTAL: 67 SUCCESS[39m
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Some of your tests did a full page reload!
+Chrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.18 secs / 0.134 secs)
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Some of your tests did a full page reload!
+[33m23 12 2025 13:21:37.397:WARN [Chrome 143.0.0.0 (Windows 10)]: [39mDisconnected (0 times) Client disconnected from CONNECTED state (transport close)
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Disconnected Client disconnected from CONNECTED state (transport close)
+Chrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.18 secs / 0.134 secs)
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Disconnected Client disconnected from CONNECTED state (transport close)
+[91m23 12 2025 13:21:37.631:ERROR [launcher]: [39mChrome crashed.
+	[23300:15216:1223/131957.266:ERROR:components\device_event_log\device_event_log_impl.cc:198] [13:19:57.266] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+[23300:25424:1223/131957.778:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: PHONE_REGISTRATION_ERROR
+[23300:25424:1223/131957.781:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: PHONE_REGISTRATION_ERROR
+[23300:25424:1223/131957.794:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: PHONE_REGISTRATION_ERROR
+[23300:25424:1223/131957.945:ERROR:google_apis\gcm\engine\mcs_client.cc:700]   Error code: 401  Error message: Authentication Failed: wrong_secret
+[23300:25424:1223/131957.945:ERROR:google_apis\gcm\engine\mcs_client.cc:702] Failed to log in to GCM, resetting connection.
+Created TensorFlow Lite XNNPACK delegate for CPU.
+[23300:25424:1223/132023.634:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: DEPRECATED_ENDPOINT
+[23300:25424:1223/132112.232:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: DEPRECATED_ENDPOINT
+
+[91m23 12 2025 13:21:37.631:ERROR [launcher]: [39mChrome stdout: 
+[91m23 12 2025 13:21:37.631:ERROR [launcher]: [39mChrome stderr: [23300:15216:1223/131957.266:ERROR:components\device_event_log\device_event_log_impl.cc:198] [13:19:57.266] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+[23300:25424:1223/131957.778:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: PHONE_REGISTRATION_ERROR
+[23300:25424:1223/131957.781:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: PHONE_REGISTRATION_ERROR
+[23300:25424:1223/131957.794:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: PHONE_REGISTRATION_ERROR
+[23300:25424:1223/131957.945:ERROR:google_apis\gcm\engine\mcs_client.cc:700]   Error code: 401  Error message: Authentication Failed: wrong_secret
+[23300:25424:1223/131957.945:ERROR:google_apis\gcm\engine\mcs_client.cc:702] Failed to log in to GCM, resetting connection.
+Created TensorFlow Lite XNNPACK delegate for CPU.
+[23300:25424:1223/132023.634:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: DEPRECATED_ENDPOINT
+[23300:25424:1223/132112.232:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: DEPRECATED_ENDPOINT
+
+[32m23 12 2025 13:21:37.794:INFO [launcher]: [39mTrying to start Chrome again (1/2).
+[32m23 12 2025 13:21:39.390:INFO [Chrome 143.0.0.0 (Windows 10)]: [39mConnected on socket vSGAxVa0dVFSDVcfAAAD with id 52096367
+[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Some of your tests did a full page reload!
+
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Some of your tests did a full page reload!
+[33m23 12 2025 13:21:39.860:WARN [Chrome 143.0.0.0 (Windows 10)]: [39mDisconnected (0 times) Client disconnected from CONNECTED state (transport close)
+[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Disconnected Client disconnected from CONNECTED state (transport close)
+
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Disconnected Client disconnected from CONNECTED state (transport close)
+[91m23 12 2025 13:21:40.096:ERROR [launcher]: [39mChrome crashed.
+	
+[91m23 12 2025 13:21:40.096:ERROR [launcher]: [39mChrome stdout: 
+[91m23 12 2025 13:21:40.097:ERROR [launcher]: [39mChrome stderr: 
+[32m23 12 2025 13:21:40.202:INFO [launcher]: [39mTrying to start Chrome again (2/2).
+[32m23 12 2025 13:21:41.686:INFO [Chrome 143.0.0.0 (Windows 10)]: [39mConnected on socket zwx0UUBqU0MIAIBFAAAF with id 52096367
+Chrome 143.0.0.0 (Windows 10): Executed 0 of 67[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 1 of 67[32m SUCCESS[39m (0 secs / 0.033 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 2 of 67[32m SUCCESS[39m (0 secs / 0.037 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 3 of 67[32m SUCCESS[39m (0 secs / 0.039 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 4 of 67[32m SUCCESS[39m (0 secs / 0.042 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 5 of 67[32m SUCCESS[39m (0 secs / 0.044 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 6 of 67[32m SUCCESS[39m (0 secs / 0.046 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 7 of 67[32m SUCCESS[39m (0 secs / 0.048 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 8 of 67[32m SUCCESS[39m (0 secs / 0.05 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 9 of 67[32m SUCCESS[39m (0 secs / 0.052 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 10 of 67[32m SUCCESS[39m (0 secs / 0.081 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 11 of 67[32m SUCCESS[39m (0 secs / 0.088 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 12 of 67[32m SUCCESS[39m (0 secs / 0.094 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 13 of 67[32m SUCCESS[39m (0 secs / 0.099 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 14 of 67[32m SUCCESS[39m (0 secs / 0.107 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 15 of 67[32m SUCCESS[39m (0 secs / 0.113 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 16 of 67[32m SUCCESS[39m (0 secs / 0.119 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 17 of 67[32m SUCCESS[39m (0 secs / 0.124 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 18 of 67[32m SUCCESS[39m (0 secs / 0.13 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 19 of 67[32m SUCCESS[39m (0 secs / 0.135 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 20 of 67[32m SUCCESS[39m (0 secs / 0.139 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 21 of 67[32m SUCCESS[39m (0 secs / 0.144 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 22 of 67[32m SUCCESS[39m (0 secs / 0.144 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 23 of 67[32m SUCCESS[39m (0 secs / 0.145 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 24 of 67[32m SUCCESS[39m (0 secs / 0.145 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 25 of 67[32m SUCCESS[39m (0 secs / 0.145 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 26 of 67[32m SUCCESS[39m (0 secs / 0.146 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 27 of 67[32m SUCCESS[39m (0 secs / 0.146 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 28 of 67[32m SUCCESS[39m (0 secs / 0.146 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 29 of 67[32m SUCCESS[39m (0 secs / 0.147 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 30 of 67[32m SUCCESS[39m (0 secs / 0.148 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 31 of 67[32m SUCCESS[39m (0 secs / 0.148 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 32 of 67[32m SUCCESS[39m (0 secs / 0.148 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 33 of 67[32m SUCCESS[39m (0 secs / 0.15 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 34 of 67[32m SUCCESS[39m (0 secs / 0.162 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 35 of 67[32m SUCCESS[39m (0 secs / 0.163 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 36 of 67[32m SUCCESS[39m (0 secs / 0.164 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 37 of 67[32m SUCCESS[39m (0 secs / 0.165 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 38 of 67[32m SUCCESS[39m (0 secs / 0.166 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 39 of 67[32m SUCCESS[39m (0 secs / 0.167 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 40 of 67[32m SUCCESS[39m (0 secs / 0.168 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 41 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 42 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 43 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 44 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 45 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 46 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 47 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 48 of 67[32m SUCCESS[39m (0 secs / 0.169 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 49 of 67[32m SUCCESS[39m (0 secs / 0.17 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 50 of 67[32m SUCCESS[39m (0 secs / 0.17 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 51 of 67[32m SUCCESS[39m (0 secs / 0.17 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 52 of 67[32m SUCCESS[39m (0 secs / 0.17 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 53 of 67[32m SUCCESS[39m (0 secs / 0.171 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 54 of 67[32m SUCCESS[39m (0 secs / 0.172 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 55 of 67[32m SUCCESS[39m (0 secs / 0.173 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 56 of 67[32m SUCCESS[39m (0 secs / 0.175 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 57 of 67[32m SUCCESS[39m (0 secs / 0.176 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 58 of 67[32m SUCCESS[39m (0 secs / 0.177 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 59 of 67[32m SUCCESS[39m (0 secs / 0.178 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 60 of 67[32m SUCCESS[39m (0 secs / 0.179 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 61 of 67[32m SUCCESS[39m (0 secs / 0.18 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 62 of 67[32m SUCCESS[39m (0 secs / 0.182 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 63 of 67[32m SUCCESS[39m (0 secs / 0.183 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 64 of 67[32m SUCCESS[39m (0 secs / 0.184 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 65 of 67[32m SUCCESS[39m (0 secs / 0.185 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 66 of 67[32m SUCCESS[39m (0 secs / 0.186 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0 secs / 0.188 secs)
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.225 secs / 0.188 secs)
+[32mTOTAL: 67 SUCCESS[39m
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Some of your tests did a full page reload!
+Chrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.225 secs / 0.188 secs)
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Some of your tests did a full page reload!
+[33m23 12 2025 13:22:04.817:WARN [Chrome 143.0.0.0 (Windows 10)]: [39mDisconnected (0 times) Client disconnected from CONNECTED state (transport close)
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Disconnected Client disconnected from CONNECTED state (transport close)
+Chrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.225 secs / 0.188 secs)
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Disconnected Client disconnected from CONNECTED state (transport close)
+[91m23 12 2025 13:22:05.050:ERROR [launcher]: [39mChrome crashed.
+	[38404:39868:1223/132145.213:ERROR:components\device_event_log\device_event_log_impl.cc:198] [13:21:45.213] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+[38404:39720:1223/132145.745:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: DEPRECATED_ENDPOINT
+[38404:39720:1223/132145.867:ERROR:google_apis\gcm\engine\mcs_client.cc:700]   Error code: 401  Error message: Authentication Failed: wrong_secret
+[38404:39720:1223/132145.867:ERROR:google_apis\gcm\engine\mcs_client.cc:702] Failed to log in to GCM, resetting connection.
+Created TensorFlow Lite XNNPACK delegate for CPU.
+
+[91m23 12 2025 13:22:05.050:ERROR [launcher]: [39mChrome stdout: 
+[91m23 12 2025 13:22:05.050:ERROR [launcher]: [39mChrome stderr: [38404:39868:1223/132145.213:ERROR:components\device_event_log\device_event_log_impl.cc:198] [13:21:45.213] USB: usb_service_win.cc:105 SetupDiGetDeviceProperty({{A45C254E-DF1C-4EFD-8020-67D146A850E0}, 6}) failed: Element not found. (0x490)
+[38404:39720:1223/132145.745:ERROR:google_apis\gcm\engine\registration_request.cc:292] Registration response error message: DEPRECATED_ENDPOINT
+[38404:39720:1223/132145.867:ERROR:google_apis\gcm\engine\mcs_client.cc:700]   Error code: 401  Error message: Authentication Failed: wrong_secret
+[38404:39720:1223/132145.867:ERROR:google_apis\gcm\engine\mcs_client.cc:702] Failed to log in to GCM, resetting connection.
+Created TensorFlow Lite XNNPACK delegate for CPU.
+
+[91m23 12 2025 13:22:05.160:ERROR [launcher]: [39mChrome failed 2 times (crashed). Giving up.
+[33m23 12 2025 13:22:07.395:WARN [Chrome 143.0.0.0 (Windows 10)]: [39mDisconnected (1 times) , because no message in 30000 ms.
+[1A[2K[31mChrome 143.0.0.0 (Windows 10) ERROR[39m
+  Disconnected , because no message in 30000 ms.
+Chrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.225 secs / 0.188 secs)
+Chrome 143.0.0.0 (Windows 10) ERROR
+  Disconnected , because no message in 30000 ms.
+[1A[2KChrome 143.0.0.0 (Windows 10): Executed 67 of 67[32m SUCCESS[39m (0.225 secs / 0.188 secs)
