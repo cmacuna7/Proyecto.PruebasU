@@ -159,7 +159,7 @@ export class VendedorManagerComponent implements OnInit {
   vendedores = signal<Vendedor[]>([]);
   editingId = signal<string | null>(null);
   error = signal<string>('');
-  
+
   formData = {
     name: '',
     email: '',
@@ -168,7 +168,7 @@ export class VendedorManagerComponent implements OnInit {
     codigoEmpleado: ''
   };
 
-  constructor(private vendedorService: VendedorService) {}
+  constructor(private vendedorService: VendedorService) { }
 
   ngOnInit() {
     this.loadVendedores();
@@ -177,7 +177,9 @@ export class VendedorManagerComponent implements OnInit {
   loadVendedores() {
     this.vendedorService.getVendedores().subscribe({
       next: (data) => this.vendedores.set(data),
-      error: (err) => this.error.set('Error al cargar vendedores')
+      error: (err) => {
+        this.error.set(err.error?.message || 'Error al cargar vendedores');
+      }
     });
   }
 
@@ -197,7 +199,10 @@ export class VendedorManagerComponent implements OnInit {
           this.loadVendedores();
           this.cancelEdit();
         },
-        error: (err) => this.error.set('Error al actualizar')
+        error: (err) => {
+          this.error.set(err.error?.message || 'Error al actualizar');
+        }
+
       });
     } else {
       this.vendedorService.addVendedor(vendedor).subscribe({
@@ -205,7 +210,9 @@ export class VendedorManagerComponent implements OnInit {
           this.loadVendedores();
           this.cancelEdit();
         },
-        error: (err) => this.error.set('Error al crear')
+        error: (err) => {
+          this.error.set(err.error?.message || 'Error al crear');
+        }
       });
     }
   }
@@ -225,7 +232,10 @@ export class VendedorManagerComponent implements OnInit {
     if (confirm('¿Está seguro de eliminar este vendedor?')) {
       this.vendedorService.deleteVendedor(id).subscribe({
         next: () => this.loadVendedores(),
-        error: (err) => this.error.set('Error al eliminar')
+        error: (err) => {
+          this.error.set(err.error?.message || 'Error al eliminar');
+        }
+
       });
     }
   }
