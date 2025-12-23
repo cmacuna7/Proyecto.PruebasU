@@ -57,7 +57,7 @@ function addNewConcesionaria(req, res) {
     };
 
     concesionarias.push(newConcesionaria);
-    res.status(201).json(newConcesionaria);
+    res.status(201).json({message: 'Concesionaria agregada exitosamente', newConcesionaria});
 }
 
 // PUT - Actualizar una concesionaria existente
@@ -82,7 +82,7 @@ function updateConcesionaria(req, res) {
     if (ciudad !== undefined) concesionarias[i].ciudad = ciudad;
     if (gerente !== undefined) concesionarias[i].gerente = gerente;
 
-    res.json(concesionarias[i]);
+    res.json({message: 'Concesionaria actualizada exitosamente', concesionaria: concesionarias[i]});
 }
 
 // DELETE - Eliminar una concesionaria
