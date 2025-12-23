@@ -57,7 +57,7 @@ Para todas las siguientes peticiones, debes configurar la autorización:
         "ciudad": "Quito"
     }
     ```
-*   **Nota**: Copia el `id` que te devuelve la respuesta para usarlo después.
+*   **Nota**: La respuesta ahora incluye un mensaje y el objeto `cliente`. Copia el `id` que está dentro de `cliente` para usarlo después.
 
 ### B. Listar Clientes (Check de Lectura)
 

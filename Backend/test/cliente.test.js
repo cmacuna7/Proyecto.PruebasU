@@ -17,7 +17,7 @@ describe('API de Clientes', () => {
   test('GET /api/clientes debería devolver lista vacía inicialmente', async () => {
     const res = await request(app).get('/api/clientes').set('Authorization', `Bearer ${token}`);
     expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual([]);
+    expect(res.body.clientes).toEqual([]);
   });
 
   // POST
@@ -33,9 +33,9 @@ describe('API de Clientes', () => {
     const res = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(nuevoCliente);
 
     expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('id');
-    expect(res.body.nombre).toBe('Juan Pérez');
-    expect(res.body.email).toBe('juan.perez@email.com');
+    expect(res.body.cliente).toHaveProperty('id');
+    expect(res.body.cliente.nombre).toBe('Juan Pérez');
+    expect(res.body.cliente.email).toBe('juan.perez@email.com');
   });
 
   // POST: datos inválidos
@@ -56,14 +56,14 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ telefono: '0999999999' });
 
     expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.telefono).toBe('0999999999');
+    expect(actualizado.body.cliente.telefono).toBe('0999999999');
   });
 
   // DELETE
@@ -77,14 +77,14 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const eliminado = await request(app).delete(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`);
     expect(eliminado.statusCode).toBe(200);
-    expect(eliminado.body.nombre).toBe('Carlos Rodríguez');
+    expect(eliminado.body.cliente.nombre).toBe('Carlos Rodríguez');
 
     const res = await request(app).get('/api/clientes').set('Authorization', `Bearer ${token}`);
-    expect(res.body.find(c => c.id === id)).toBeUndefined();
+    expect(res.body.clientes.find(c => c.id === id)).toBeUndefined();
   });
 
   // VALIDACIÓN DE FORMATO: Email inválido
@@ -133,16 +133,16 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ ciudad: 'Ambato' });
 
     expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.ciudad).toBe('Ambato');
-    expect(actualizado.body.nombre).toBe('Sofía Martínez');
-    expect(actualizado.body.email).toBe('sofia.martinez@email.com');
+    expect(actualizado.body.cliente.ciudad).toBe('Ambato');
+    expect(actualizado.body.cliente.nombre).toBe('Sofía Martínez');
+    expect(actualizado.body.cliente.email).toBe('sofia.martinez@email.com');
   });
 
   // VALIDACIÓN: Campos con solo espacios
@@ -171,15 +171,15 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
       .send({ email: 'nuevo.email@email.com' });
 
     expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.email).toBe('nuevo.email@email.com');
-    expect(actualizado.body.nombre).toBe('Roberto García');
+    expect(actualizado.body.cliente.email).toBe('nuevo.email@email.com');
+    expect(actualizado.body.cliente.nombre).toBe('Roberto García');
   });
 
   // COBERTURA: Actualizar múltiples campos incluyendo ciudad
@@ -193,19 +193,19 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
-      .send({ 
+      .send({
         email: 'patricia.new@email.com',
         ciudad: 'Santo Domingo'
       });
 
     expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.email).toBe('patricia.new@email.com');
-    expect(actualizado.body.ciudad).toBe('Santo Domingo');
-    expect(actualizado.body.nombre).toBe('Patricia Morales');
+    expect(actualizado.body.cliente.email).toBe('patricia.new@email.com');
+    expect(actualizado.body.cliente.ciudad).toBe('Santo Domingo');
+    expect(actualizado.body.cliente.nombre).toBe('Patricia Morales');
   });
 
   // COBERTURA: Actualizar todos los campos individualmente
@@ -219,18 +219,18 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
-      .send({ 
+      .send({
         nombre: 'Luis Fernando Hernández',
         direccion: 'Calle Nueva 200'
       });
 
     expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.nombre).toBe('Luis Fernando Hernández');
-    expect(actualizado.body.direccion).toBe('Calle Nueva 200');
+    expect(actualizado.body.cliente.nombre).toBe('Luis Fernando Hernández');
+    expect(actualizado.body.cliente.direccion).toBe('Calle Nueva 200');
   });
 
   // VALIDACIÓN: Email duplicado exacto
@@ -303,7 +303,7 @@ describe('API de Clientes', () => {
 
     await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente1);
     const creado2 = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente2);
-    const id2 = creado2.body.id;
+    const id2 = creado2.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id2}`).set('Authorization', `Bearer ${token}`)
@@ -324,18 +324,18 @@ describe('API de Clientes', () => {
     };
 
     const creado = await request(app).post('/api/clientes').set('Authorization', `Bearer ${token}`).send(cliente);
-    const id = creado.body.id;
+    const id = creado.body.cliente.id;
 
     const actualizado = await request(app)
       .put(`/api/clientes/${id}`).set('Authorization', `Bearer ${token}`)
-      .send({ 
+      .send({
         nombre: 'Cliente Modificado',
         email: 'original@email.com'
       });
 
     expect(actualizado.statusCode).toBe(200);
-    expect(actualizado.body.nombre).toBe('Cliente Modificado');
-    expect(actualizado.body.email).toBe('original@email.com');
+    expect(actualizado.body.cliente.nombre).toBe('Cliente Modificado');
+    expect(actualizado.body.cliente.email).toBe('original@email.com');
   });
 });
 
