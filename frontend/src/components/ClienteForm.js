@@ -21,11 +21,7 @@ function ClienteForm({ onGuardar, editCliente, onCancelEdit }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Envía los datos
     onGuardar(form);
-
-    // Limpia el formulario
     setForm({
       nombre: "",
       email: "",
@@ -37,67 +33,99 @@ function ClienteForm({ onGuardar, editCliente, onCancelEdit }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>{editCliente ? "Editar Cliente" : "Nuevo Cliente"}</h2>
-      <div style={{ marginBottom: "10px" }}>
-        <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre"
-          value={form.nombre}
-          onChange={handleChange}
-          required
-          style={{ marginRight: "10px", padding: "5px" }}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          style={{ marginRight: "10px", padding: "5px" }}
-        />
-        <input
-          type="tel"
-          name="telefono"
-          placeholder="Teléfono"
-          value={form.telefono}
-          onChange={handleChange}
-          required
-          style={{ marginRight: "10px", padding: "5px" }}
-        />
-      </div>
-      <div style={{ marginBottom: "10px" }}>
-        <input
-          type="text"
-          name="direccion"
-          placeholder="Dirección"
-          value={form.direccion}
-          onChange={handleChange}
-          required
-          style={{ marginRight: "10px", padding: "5px", width: "300px" }}
-        />
-        <input
-          type="text"
-          name="ciudad"
-          placeholder="Ciudad"
-          value={form.ciudad}
-          onChange={handleChange}
-          required
-          style={{ marginRight: "10px", padding: "5px" }}
-        />
-      </div>
-      <button type="submit">{editCliente ? "Actualizar" : "Guardar"}</button>
+      <h2 className="section-heading">
+        {editCliente ? "Editar Cliente" : "Nuevo Cliente"}
+      </h2>
 
-      {editCliente && (
-        <button
-          type="button"
-          onClick={onCancelEdit}
-          style={{ marginLeft: "10px" }}
-        >
-          Cancelar
+      <div className="form-row">
+        <div>
+          <label htmlFor="nombre">Nombre</label>
+          <input
+            id="nombre"
+            type="text"
+            name="nombre"
+            placeholder="Nombre completo"
+            value={form.nombre}
+            onChange={handleChange}
+            required
+            className="input"
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="correo@ejemplo.com"
+            value={form.email}
+            onChange={handleChange}
+            required
+            className="input"
+          />
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div>
+          <label htmlFor="telefono">Teléfono</label>
+          <input
+            id="telefono"
+            type="tel"
+            name="telefono"
+            placeholder="+593..."
+            value={form.telefono}
+            onChange={handleChange}
+            required
+            className="input"
+          />
+        </div>
+        <div>
+          <label htmlFor="ciudad">Ciudad</label>
+          <input
+            id="ciudad"
+            type="text"
+            name="ciudad"
+            placeholder="Ciudad"
+            value={form.ciudad}
+            onChange={handleChange}
+            required
+            className="input"
+          />
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div style={{ gridColumn: "1 / -1" }}>
+          <label htmlFor="direccion">Dirección</label>
+          <input
+            id="direccion"
+            type="text"
+            name="direccion"
+            placeholder="Dirección completa"
+            value={form.direccion}
+            onChange={handleChange}
+            required
+            className="input"
+          />
+        </div>
+      </div>
+
+      <div className="form-actions">
+        <button type="submit" className="btn">
+          {editCliente ? "Actualizar" : "Guardar"}
         </button>
-      )}
+
+        {editCliente && (
+          <button
+            type="button"
+            onClick={onCancelEdit}
+            className="btn secondary"
+          >
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 }
