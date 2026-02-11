@@ -19,12 +19,12 @@ jobs:
 
       - name: Run Tests (Backend)
         run: cd Backend && npm test
-        continue-on-error: true # Opcional: permitir deploy aunque fallen tests por ahora
+        continue-on-error: true
 
       - name: Deploy to Vercel Action
         uses: amondnet/vercel-action@v25
         with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Necesitas configurar esto en GitHub
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # Necesitas configurar esto en GitHub
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # Necesitas configurar esto en GitHub
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
