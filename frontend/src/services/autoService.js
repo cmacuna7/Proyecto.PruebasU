@@ -1,7 +1,7 @@
 import { getApiUrl } from './config';
 
 // URL base del backend para autos
-const API_URL = getApiUrl('/api/autos');
+const API_URL = getApiUrl('/autos');
 
 /**
  * Obtener headers de autenticación

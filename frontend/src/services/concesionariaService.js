@@ -1,7 +1,7 @@
 import { getApiUrl } from './config';
 
 // URL base del backend para concesionarias
-const API_URL = getApiUrl('/api/concesionarias');
+const API_URL = getApiUrl('/concesionarias');
 
 /**
  * Obtener headers de autenticación
