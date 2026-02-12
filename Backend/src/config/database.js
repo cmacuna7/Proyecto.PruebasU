@@ -10,6 +10,7 @@ class Database {
             await mongoose.connect(this.mongoUrl);
             // Connection successful
         } catch (error) {
+            error.message = 'Error connecting to MongoDB: ' + error.message;
             // MongoDB connection failed
             process.exit(1);
         }
@@ -20,6 +21,7 @@ class Database {
             await mongoose.connection.close();
             // Disconnected from MongoDB
         } catch (error) {
+            error.message = 'Error disconnecting from MongoDB: ' + error.message;
             // Error disconnecting from MongoDB
         }
     }
