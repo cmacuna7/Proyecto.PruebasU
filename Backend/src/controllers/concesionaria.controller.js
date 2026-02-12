@@ -104,6 +104,7 @@ function deleteConcesionaria(req, res) {
 // Helper de pruebas
 /* istanbul ignore next */
 function _clearConcesionarias() {
+    const concesionarias = getConcesionarias();
     concesionarias.length = 0;
 }
 
