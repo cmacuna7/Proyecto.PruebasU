@@ -1,15 +1,12 @@
-const clientes = [
-    { id: 1, nombre: 'Carlos Rodriguez', email: 'carlos@cliente.com', telefono: '5551234567', direccion: 'Calle 123', ciudad: 'Quito' },
-    { id: 2, nombre: 'Ana Martinez', email: 'ana@cliente.com', telefono: '5559876543', direccion: 'Av Principal 456', ciudad: 'Guayaquil' }
-];
-let clienteIdCounter = 100;
+const { getClientes, getClienteIdCounter } = require('../utils/globalStore');
 
 function getAllClientes(req, res) {
-    res.json({ message: 'Clientes obtenidos exitosamente', clientes });
+    res.json({ message: 'Clientes obtenidos exitosamente', clientes: getClientes() });
 }
 
 function getClienteById(req, res) {
     const { id } = req.params;
+    const clientes = getClientes();
     const cliente = clientes.find(c => c.id == id);
     if (!cliente) return res.status(404).json({ message: 'Cliente no encontrado' });
     res.json({ message: 'Cliente obtenido exitosamente', cliente });
@@ -20,6 +17,7 @@ function hasEmptyFields(fields) {
 }
 
 function isEmailDuplicate(email, excludeId) {
+    const clientes = getClientes();
     return clientes.some(c => c.email.toLowerCase() === email.toLowerCase() && c.id != excludeId);
 }
 
@@ -43,13 +41,14 @@ function addNewCliente(req, res) {
     }
 
     const newCliente = {
-        id: clienteIdCounter++,
+        id: getClienteIdCounter(),
         nombre,
         email,
         telefono,
         direccion,
         ciudad
     };
+    const clientes = getClientes();
     clientes.push(newCliente);
     res.status(201).json({ message: 'Cliente agregado exitosamente', cliente: newCliente });
 }

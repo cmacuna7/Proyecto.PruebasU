@@ -1,8 +1,4 @@
-const vendedores = [
-    { id: 1, name: 'Juan Perez', email: 'juan@empresa.com', telefono: '1234567890', comision: 5, codigoEmpleado: 'EMP001' },
-    { id: 2, name: 'Maria Lopez', email: 'maria@empresa.com', telefono: '0987654321', comision: 7, codigoEmpleado: 'EMP002' }
-];
-let vendorIdCounter = 100;
+const { getVendedores, getVendorIdCounter } = require('../utils/globalStore');
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^[0-9]{7,15}$/;
@@ -23,13 +19,14 @@ function createVendor(req, res) {
     if (isNaN(comision) || comision < 0 || comision > 100)
         return res.status(400).json({message: 'La comisión debe ser un número entre 0 y 100'});
 
+    const vendedores = getVendedores();
     if (vendedores.some(v => v.email === email))
         return res.status(409).json({ message: 'El email ya está registrado' });
 
     if (vendedores.some(v => v.codigoEmpleado === codigoEmpleado))
         return res.status(409).json({ message: 'El código de empleado ya está registrado' });
 
-    const newVendedor = {id: vendorIdCounter++, name, email, telefono, comision, codigoEmpleado };
+    const newVendedor = {id: getVendorIdCounter(), name, email, telefono, comision, codigoEmpleado };
 
     vendedores.push(newVendedor);
     return res.status(201).json(newVendedor);
@@ -37,12 +34,13 @@ function createVendor(req, res) {
 
 // GET: obtener todos los vendedores
 function getAllVendors(req, res) {
-    res.json(vendedores);
+    res.json(getVendedores());
 }
 
 // GET: obtener un vendedor por ID
 function getVendorById(req, res) {
     const id = Number(req.params.id);
+    const vendedores = getVendedores();
     const vendedor = vendedores.find(v => v.id === id);
 
     if (!vendedor)
@@ -54,8 +52,7 @@ function getVendorById(req, res) {
 // PUT: actualizar vendedor
 function updateVendor(req, res) {
     const id = parseInt(req.params.id);
-    const { name, email, telefono, comision, codigoEmpleado } = req.body;
-    const index = vendedores.findIndex(v => v.id === id);
+    const { name, email, telefono, comision, codigoEmpleado } = req.body;    const vendedores = getVendedores();    const index = vendedores.findIndex(v => v.id === id);
     if (index === -1) return res.status(404).json({ message: 'Vendedor no encontrado' });
 
     const vendedor = vendedores[index];
@@ -96,6 +93,7 @@ function deleteVendor(req, res) {
 // Helper de pruebas
 /* istanbul ignore next */
 function _clearVendedores() {
+    const vendedores = getVendedores();
     vendedores.length = 0;
 }
 
