@@ -100,7 +100,8 @@ async function deleteConcesionaria(req, res) {
 async function _clearConcesionarias() {
     try {
         await Concesionaria.deleteMany({});
-    } catch (_error) {
+    } catch (error) {
+        error.message = 'Error eliminando concesionaria: ' + error.message;
         // Error clearing concesionarias
     }
 }
