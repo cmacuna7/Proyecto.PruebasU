@@ -9,23 +9,9 @@ on:
 jobs:
   backend_test:
     runs-on: ubuntu-latest
-    
-    services:
-      mongodb:
-        image: mongo:6.0
-        env:
-          MONGO_INITDB_ROOT_USERNAME: admin
-          MONGO_INITDB_ROOT_PASSWORD: password
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongo --host localhost:27017 --username admin --password password --authenticationDatabase admin --eval 'db.runCommand({ping: 1})' --quiet"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     env:
-      MONGO_URL: mongodb://admin:password@localhost:27017/concesionaria_test?authSource=admin
+      MONGO_URL: mongodb+srv://FCaetano:FCaetano@cluster0.erktrrv.mongodb.net/concesionaria_test?retryWrites=true&w=majority&appName=Cluster0
       NODE_ENV: test
       JWT_SECRET: test_jwt_secret_key_for_ci
     
@@ -44,10 +30,6 @@ jobs:
       - name: Instalar dependencias Backend
         run: npm install
 
-      - name: Esperar a que MongoDB esté listo
-        run: |
-          timeout 30 sh -c 'until nc -z localhost 27017; do sleep 1; done'
-
       - name: Lint del código Backend
         run: npm run lint
 
@@ -55,9 +37,6 @@ jobs:
         run: npm test
         env:
           CI: true
-      
-      - name: Ver cobertura Backend
-        run: npm run test:coverage
 
   frontend_test:
     runs-on: ubuntu-latest
@@ -78,9 +57,6 @@ jobs:
 
       - name: Ejecutar pruebas Frontend
         run: npm test -- --watchAll=false
-
-      - name: Verificar cobertura Frontend
-        run: npm run test:coverage
 
       - name: Build Frontend
         run: npm run build

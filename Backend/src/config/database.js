@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 class Database {
     constructor() {
-        this.mongoUrl = process.env.MONGO_URL || process.env.DATABASE_URL || 'mongodb://localhost:27017/concesionaria';
+        this.mongoUrl = process.env.MONGO_URL || process.env.DATABASE_URL || 'mongodb+srv://FCaetano:FCaetano@cluster0.erktrrv.mongodb.net/concesionaria?retryWrites=true&w=majority&appName=Cluster0';
     }
 
     async connect() {
