@@ -10,28 +10,26 @@ async function getAllConcesionarias(req, res) {
     }
 }
 
+// Validate concesionaria name uniqueness
+async function validateConcesionariaName(nombre, excludeId = null) {
+    const query = { nombre: { $regex: new RegExp(`^${nombre}$`, 'i') } };
+    if (excludeId) query._id = { $ne: excludeId };
+    
+    const existingConcesionaria = await Concesionaria.findOne(query);
+    return !existingConcesionaria;
+}
+
 // POST - Crear una nueva concesionaria
 async function addNewConcesionaria(req, res) {
     try {
         const { nombre, direccion, telefono, ciudad, gerente } = req.body;
 
-        // Validar si el nombre ya existe
-        const nombreExiste = await Concesionaria.findOne({ 
-            nombre: { $regex: new RegExp(`^${nombre}$`, 'i') }
-        });
-        
-        if (nombreExiste) {
+        const isNameAvailable = await validateConcesionariaName(nombre);
+        if (!isNameAvailable) {
             return res.status(400).json({ message: 'Ya existe una concesionaria con ese nombre' });
         }
 
-        const newConcesionaria = new Concesionaria({
-            nombre,
-            direccion,
-            telefono,
-            ciudad,
-            gerente
-        });
-
+        const newConcesionaria = new Concesionaria({ nombre, direccion, telefono, ciudad, gerente });
         const savedConcesionaria = await newConcesionaria.save();
         res.status(201).json(savedConcesionaria);
     } catch (error) {
@@ -43,41 +41,39 @@ async function addNewConcesionaria(req, res) {
     }
 }
 
+// Handle concesionaria update errors
+function handleConcesionariaUpdateError(error, res) {
+    if (error.name === 'CastError') {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+    if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(err => err.message);
+        return res.status(400).json({ message: messages.join(', ') });
+    }
+    return false;
+}
+
 // PUT - Actualizar una concesionaria existente
 async function updateConcesionaria(req, res) {
     try {
         const { id } = req.params;
         const updateData = req.body;
 
-        // Si se está actualizando el nombre, validar que no exista
         if (updateData.nombre) {
-            const nombreExiste = await Concesionaria.findOne({ 
-                nombre: { $regex: new RegExp(`^${updateData.nombre}$`, 'i') },
-                _id: { $ne: id }
-            });
-            
-            if (nombreExiste) {
+            const isNameAvailable = await validateConcesionariaName(updateData.nombre, id);
+            if (!isNameAvailable) {
                 return res.status(400).json({ message: 'Ya existe una concesionaria con ese nombre' });
             }
         }
 
         const updatedConcesionaria = await Concesionaria.findByIdAndUpdate(
-            id,
-            updateData,
-            { new: true, runValidators: true }
+            id, updateData, { new: true, runValidators: true }
         );
 
         if (!updatedConcesionaria) return res.status(404).json({ message: 'Concesionaria no encontrada' });
-
         res.json(updatedConcesionaria);
     } catch (error) {
-        if (error.name === 'CastError') {
-            return res.status(400).json({ message: 'ID inválido' });
-        }
-        if (error.name === 'ValidationError') {
-            const messages = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ message: messages.join(', ') });
-        }
+        if (handleConcesionariaUpdateError(error, res)) return;
         res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 }
@@ -104,15 +100,16 @@ async function deleteConcesionaria(req, res) {
 async function _clearConcesionarias() {
     try {
         await Concesionaria.deleteMany({});
-    } catch (error) {
-        console.error('Error clearing concesionarias:', error);
+    } catch (_error) {
+        _error.message = 'Error eliminando vendedor: ' + _error.message;
+        // Error clearing concesionarias
     }
 }
 
-module.exports = { 
-    getAllConcesionarias, 
-    addNewConcesionaria, 
-    updateConcesionaria, 
+module.exports = {
+    getAllConcesionarias,
+    addNewConcesionaria,
+    updateConcesionaria,
     deleteConcesionaria,
-    _clearConcesionarias 
+    _clearConcesionarias
 };

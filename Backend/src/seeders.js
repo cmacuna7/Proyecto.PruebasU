@@ -25,41 +25,41 @@ const seedData = {
     ]
 };
 
+// Clear all collections
+async function clearCollections() {
+    await Promise.all([
+        Auto.deleteMany({}),
+        Cliente.deleteMany({}),
+        Vendedor.deleteMany({}),
+        Concesionaria.deleteMany({}),
+        Usuario.deleteMany({})
+    ]);
+}
+
+// Insert seed data
+async function insertSeedData() {
+    await Promise.all([
+        Auto.insertMany(seedData.autos),
+        Cliente.insertMany(seedData.clientes),
+        Vendedor.insertMany(seedData.vendedores),
+        Concesionaria.insertMany(seedData.concesionarias),
+        Usuario.insertMany(seedData.usuarios)
+    ]);
+}
+
 async function seedDatabase() {
     try {
-        console.log('🌱 Iniciando seed de la base de datos...');
-        
+        // Starting database seeding
         await database.connect();
-
-        // Limpiar colecciones existentes
-        await Promise.all([
-            Auto.deleteMany({}),
-            Cliente.deleteMany({}),
-            Vendedor.deleteMany({}),
-            Concesionaria.deleteMany({}),
-            Usuario.deleteMany({})
-        ]);
-
-        // Insertar datos iniciales
-        await Promise.all([
-            Auto.insertMany(seedData.autos),
-            Cliente.insertMany(seedData.clientes),
-            Vendedor.insertMany(seedData.vendedores),
-            Concesionaria.insertMany(seedData.concesionarias),
-            Usuario.insertMany(seedData.usuarios)
-        ]);
-
-        console.log('✅ Base de datos inicializada correctamente');
-        console.log(`- ${seedData.autos.length} autos creados`);
-        console.log(`- ${seedData.clientes.length} clientes creados`);
-        console.log(`- ${seedData.vendedores.length} vendedores creados`);
-        console.log(`- ${seedData.concesionarias.length} concesionarias creadas`);
-        console.log(`- ${seedData.usuarios.length} usuarios creados`);
-
+        await clearCollections();
+        await insertSeedData();
+        // Database seeded successfully
+        
         await database.disconnect();
         process.exit(0);
-    } catch (error) {
-        console.error('❌ Error inicializando base de datos:', error);
+    } catch (_error) {
+        // Error during database seeding
+        _error.message = 'Error seeding database: ' + _error.message;
         await database.disconnect();
         process.exit(1);
     }

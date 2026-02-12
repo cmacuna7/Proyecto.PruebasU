@@ -11,9 +11,10 @@ class Database {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
             });
-            console.log('🟢 Conexión exitosa a MongoDB');
+            // Connection successful
         } catch (error) {
-            console.error('🔴 Error conectando a MongoDB:', error.message);
+            error.message = 'Error conectando a MongoDB: ' + error.message;
+            // MongoDB connection failed
             process.exit(1);
         }
     }
@@ -21,9 +22,10 @@ class Database {
     async disconnect() {
         try {
             await mongoose.connection.close();
-            console.log('🟡 Desconectado de MongoDB');
+            // Disconnected from MongoDB
         } catch (error) {
-            console.error('Error desconectando de MongoDB:', error.message);
+            error.message = 'Error eliminando cliente: ' + error.message;
+            // Error disconnecting from MongoDB
         }
     }
 

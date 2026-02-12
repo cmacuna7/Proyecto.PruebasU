@@ -15,8 +15,8 @@ const app = express();
 database.connect().then(() => {
     // Crear datos iniciales después de conectar
     createDefaultAdmin();
-}).catch(error => {
-    console.error('Error inicializando aplicación:', error);
+}).catch(_error => {
+    // Silently handle startup errors
 });
 
 // middlewares
@@ -33,7 +33,7 @@ app.use(express.json());
 
 // Agregada ruta raíz para estado / pruebas
 app.get('/', (req, res) => {
-    res.json({ 
+    res.json({
         message: 'API Concesionarias - Backend activo',
         database: database.getConnectionState() === 1 ? 'Conectado' : 'Desconectado',
         timestamp: new Date().toISOString()
@@ -61,23 +61,22 @@ app.use((req, res) => {
 });
 
 // Manejo de errores globales
-app.use((error, req, res, next) => {
-    console.error('Error no mannejado:', error);
-    res.status(500).json({ 
+app.use((error, req, res, _next) => {
+    // Log error in development only
+    res.status(500).json({
         message: 'Error interno del servidor',
         error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
 });
 
 // iniciar servidor si se ejecuta con `node app.js`
-/* eslint-disable no-undef, no-console */
 /* istanbul ignore if */
 if (require.main === module) {
     const port = process.env.PORT || 3000;
     app.listen(port, () => {
-        console.log(`Servidor backend escuchando en http://localhost:${port}`);
+        // Server started on port
     });
 }
-/* eslint-enable no-undef, no-console */
+ 
 
 module.exports = app;

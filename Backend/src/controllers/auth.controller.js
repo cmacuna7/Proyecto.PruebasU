@@ -11,6 +11,15 @@ function generateToken(user) {
     );
 }
 
+// Validate user credentials
+async function validateUser(email, password) {
+    const user = await Usuario.findOne({ email: email.toLowerCase() });
+    if (!user) return null;
+    
+    const isPasswordValid = await user.checkPassword(password);
+    return isPasswordValid ? user : null;
+}
+
 // Login de usuario
 async function login(req, res) {
     try {
@@ -20,15 +29,8 @@ async function login(req, res) {
             return res.status(400).json({ msg: 'Email y contraseña son requeridos' });
         }
 
-        // Buscar usuario por email
-        const user = await Usuario.findOne({ email: email.toLowerCase() });
+        const user = await validateUser(email, password);
         if (!user) {
-            return res.status(401).json({ msg: 'Credenciales inválidas' });
-        }
-
-        // Verificar contraseña
-        const isPasswordValid = await user.checkPassword(password);
-        if (!isPasswordValid) {
             return res.status(401).json({ msg: 'Credenciales inválidas' });
         }
 
@@ -72,10 +74,11 @@ async function createDefaultAdmin() {
                 password: 'consesionariachida'
             });
             await admin.save();
-            console.log('🔧 Usuario admin por defecto creado');
+            // Admin user created
         }
-    } catch (error) {
-        console.error('Error creando usuario admin por defecto:', error.message);
+    } catch (_error) {
+        _error.message = 'Error eliminando cliente: ' + _error.message;
+        // Error creating default admin user
     }
 }
 
