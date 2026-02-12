@@ -10,15 +10,6 @@ jobs:
     name: Run K6 Load Test
     runs-on: ubuntu-latest
     
-    services:
-      backend:
-        image: node:20
-        ports:
-          - 3000:3000
-        env:
-          PORT: 3000
-          NODE_ENV: test
-    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,12 +28,14 @@ jobs:
         run: |
           echo "Starting backend server..."
           node src/app.js &
-          sleep 5
+          SERVER_PID=$!
+          echo "Server PID: $SERVER_PID"
+          echo $SERVER_PID > ../server.pid
+          sleep 10
           echo "Testing server connection..."
-          curl -f http://localhost:3000 || exit 1
+          curl -v http://localhost:3000/ || exit 1
         env:
           PORT: 3000
-          NODE_ENV: test
           
       - name: Run K6 Load Test
         uses: grafana/k6-action@v0.3.0
@@ -51,3 +44,10 @@ jobs:
         with:
           filename: k6-tests/load-test.js
           flags: --vus 5 --duration 20s
+          
+      - name: Stop Backend Server
+        if: always()
+        run: |
+          if [ -f server.pid ]; then
+            kill $(cat server.pid) || true
+          fi
