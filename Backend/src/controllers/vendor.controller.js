@@ -81,6 +81,7 @@ function updateVendor(req, res) {
 // DELETE: eliminar vendedor
 function deleteVendor(req, res) {
     const id = parseInt(req.params.id);
+    const vendedores = getVendedores();
     const index = vendedores.findIndex(v => v.id === id);
 
     if (index === -1)

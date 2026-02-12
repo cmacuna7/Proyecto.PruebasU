@@ -66,6 +66,7 @@ function updateAuto(req, res) {
 // DELETE - Eliminar auto
 function deleteAuto(req, res) {
     const { id } = req.params;
+    const autos = getAutos();
 
     // Buscar y eliminar auto
     const index = autos.findIndex(a => a.id === Number(id));

@@ -91,6 +91,7 @@ function updateConcesionaria(req, res) {
 // DELETE - Eliminar una concesionaria
 function deleteConcesionaria(req, res) {
     const { id } = req.params;
+    const concesionarias = getConcesionarias();
   
     const index = concesionarias.findIndex(c => c.id == id);
     if (index === -1) return res.status(404).json({ message: 'Concesionaria no encontrada' });
