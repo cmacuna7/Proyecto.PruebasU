@@ -6,7 +6,7 @@
     "start": "node src/app.js",
     "seed": "node src/seeders.js",
     "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
-    "test-coverage": "jest --coverage --forceExit --detectOpenHandles --maxWorkers=1",
+    "test:coverage": "jest --coverage --forceExit --detectOpenHandles --maxWorkers=1",
     "lint": "eslint",
     "lintFix": "eslint --fix"
   },
@@ -14,7 +14,21 @@
     "testEnvironment": "node",
     "setupFilesAfterEnv": ["<rootDir>/test/setup.js"],
     "testTimeout": 30000,
-    "verbose": true
+    "verbose": true,
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/seeders.js",
+      "!src/app.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 85,
+        "functions": 85,
+        "lines": 85,
+        "statements": 85
+      }
+    },
+    "coverageReporters": ["text", "lcov", "html"]
   },
   "repository": {
     "type": "git",

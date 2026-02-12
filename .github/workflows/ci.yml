@@ -19,7 +19,7 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd "mongosh --quiet --eval 'db.runCommand(\"ping\").ok'"
+          --health-cmd "mongo --host localhost:27017 --username admin --password password --authenticationDatabase admin --eval 'db.runCommand({ping: 1})' --quiet"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -46,7 +46,7 @@ jobs:
 
       - name: Esperar a que MongoDB esté listo
         run: |
-          timeout 30 sh -c 'until mongosh --host localhost:27017 --username admin --password password --authenticationDatabase admin --eval "db.runCommand({ping: 1})" --quiet; do sleep 1; done'
+          timeout 30 sh -c 'until nc -z localhost 27017; do sleep 1; done'
 
       - name: Lint del código Backend
         run: npm run lint
@@ -78,6 +78,9 @@ jobs:
 
       - name: Ejecutar pruebas Frontend
         run: npm test -- --watchAll=false
+
+      - name: Verificar cobertura Frontend
+        run: npm run test:coverage
 
       - name: Build Frontend
         run: npm run build
