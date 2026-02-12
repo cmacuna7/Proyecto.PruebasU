@@ -1,4 +1,5 @@
 const autos = [];
+let autoIdCounter = 1;
 const MAX_YEAR = new Date().getFullYear() + 1;
 
 function validateYear(año) {
@@ -31,7 +32,7 @@ function addNewAuto(req, res) {
     if (!isSerieUnique(numeroSerie)) return res.status(400).json({ message: 'El número de serie ya existe' });
 
     const newAuto = {
-        id: Date.now(), marca: String(marca).trim(), modelo: String(modelo).trim(),
+        id: autoIdCounter++, marca: String(marca).trim(), modelo: String(modelo).trim(),
         año: yearNum, color: String(color).trim(), numeroSerie: String(numeroSerie).trim().toUpperCase()
     };
     autos.push(newAuto);

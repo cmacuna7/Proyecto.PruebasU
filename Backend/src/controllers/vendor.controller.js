@@ -1,4 +1,5 @@
 const vendedores = [];
+let vendorIdCounter = 1;
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegex = /^[0-9]{7,15}$/;
@@ -25,7 +26,7 @@ function createVendor(req, res) {
     if (vendedores.some(v => v.codigoEmpleado === codigoEmpleado))
         return res.status(409).json({ message: 'El código de empleado ya está registrado' });
 
-    const newVendedor = {id: Date.now(), name, email, telefono, comision, codigoEmpleado };
+    const newVendedor = {id: vendorIdCounter++, name, email, telefono, comision, codigoEmpleado };
 
     vendedores.push(newVendedor);
     return res.status(201).json(newVendedor);

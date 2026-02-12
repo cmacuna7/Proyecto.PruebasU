@@ -1,4 +1,5 @@
 const clientes = [];
+let clienteIdCounter = 1;
 
 function getAllClientes(req, res) {
     res.json({ message: 'Clientes obtenidos exitosamente', clientes });
@@ -39,7 +40,7 @@ function addNewCliente(req, res) {
     }
 
     const newCliente = {
-        id: Date.now(),
+        id: clienteIdCounter++,
         nombre,
         email,
         telefono,

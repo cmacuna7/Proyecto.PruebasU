@@ -9,6 +9,7 @@
 // }
 
 const concesionarias = [];
+let concesionariaIdCounter = 1;
 
 // GET - Obtener todas las concesionarias
 function getAllConcesionarias(req, res) {
@@ -48,7 +49,7 @@ function addNewConcesionaria(req, res) {
     }
 
     const newConcesionaria = {
-        id: Date.now(),
+        id: concesionariaIdCounter++,
         nombre,
         direccion,
         telefono,
