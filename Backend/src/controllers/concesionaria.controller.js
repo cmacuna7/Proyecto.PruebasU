@@ -1,46 +1,27 @@
-const Concesionaria = require('../models/concesionaria.model');
+const { Concesionaria } = require('../models');
 
+// GET - Obtener todas las concesionarias
 async function getAllConcesionarias(req, res) {
     try {
         const concesionarias = await Concesionaria.find();
         res.json(concesionarias);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 }
 
-async function validateConcesionariaData(data, concesionariaId = null) {
-    const { nombre, direccion, telefono, ciudad, gerente } = data;
-
-    if (!nombre || !direccion || !telefono || !ciudad || !gerente) {
-        return 'Nombre, Dirección, Teléfono, Ciudad y Gerente son requeridos';
-    }
-
-    if (nombre.trim() === '' || direccion.trim() === '' || telefono.trim() === '' ||
-        ciudad.trim() === '' || gerente.trim() === '') {
-        return 'Los campos no pueden estar vacíos o contener solo espacios';
-    }
-
-    // Validar nombre duplicado
-    const query = { nombre: new RegExp(`^${nombre}$`, 'i') }; // Case-insensitive check
-    if (concesionariaId) {
-        query._id = { $ne: concesionariaId };
-    }
-    const existing = await Concesionaria.findOne(query);
-    if (existing) {
-        return 'Ya existe una concesionaria con ese nombre';
-    }
-
-    return null;
-}
-
+// POST - Crear una nueva concesionaria
 async function addNewConcesionaria(req, res) {
     try {
         const { nombre, direccion, telefono, ciudad, gerente } = req.body;
 
-        const error = await validateConcesionariaData(req.body);
-        if (error) {
-            return res.status(400).json({ message: error });
+        // Validar si el nombre ya existe
+        const nombreExiste = await Concesionaria.findOne({ 
+            nombre: { $regex: new RegExp(`^${nombre}$`, 'i') }
+        });
+        
+        if (nombreExiste) {
+            return res.status(400).json({ message: 'Ya existe una concesionaria con ese nombre' });
         }
 
         const newConcesionaria = new Concesionaria({
@@ -51,67 +32,87 @@ async function addNewConcesionaria(req, res) {
             gerente
         });
 
-        await newConcesionaria.save();
-        res.status(201).json(newConcesionaria);
+        const savedConcesionaria = await newConcesionaria.save();
+        res.status(201).json(savedConcesionaria);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ message: messages.join(', ') });
+        }
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 }
 
+// PUT - Actualizar una concesionaria existente
 async function updateConcesionaria(req, res) {
     try {
         const { id } = req.params;
-        const { nombre, direccion, telefono, ciudad, gerente } = req.body;
+        const updateData = req.body;
 
-        const concesionaria = await Concesionaria.findById(id);
-        if (!concesionaria) return res.status(404).json({ message: 'Concesionaria no encontrada' });
-
-        if (nombre !== undefined) {
-            const error = await validateConcesionariaData({
-                nombre,
-                direccion: direccion || concesionaria.direccion,
-                telefono: telefono || concesionaria.telefono,
-                ciudad: ciudad || concesionaria.ciudad,
-                gerente: gerente || concesionaria.gerente
-            }, id);
-
-            if (error) {
-                return res.status(400).json({ message: error });
+        // Si se está actualizando el nombre, validar que no exista
+        if (updateData.nombre) {
+            const nombreExiste = await Concesionaria.findOne({ 
+                nombre: { $regex: new RegExp(`^${updateData.nombre}$`, 'i') },
+                _id: { $ne: id }
+            });
+            
+            if (nombreExiste) {
+                return res.status(400).json({ message: 'Ya existe una concesionaria con ese nombre' });
             }
         }
 
-        if (nombre !== undefined) concesionaria.nombre = nombre;
-        if (direccion !== undefined) concesionaria.direccion = direccion;
-        if (telefono !== undefined) concesionaria.telefono = telefono;
-        if (ciudad !== undefined) concesionaria.ciudad = ciudad;
-        if (gerente !== undefined) concesionaria.gerente = gerente;
+        const updatedConcesionaria = await Concesionaria.findByIdAndUpdate(
+            id,
+            updateData,
+            { new: true, runValidators: true }
+        );
 
-        await concesionaria.save();
-        res.json(concesionaria);
+        if (!updatedConcesionaria) return res.status(404).json({ message: 'Concesionaria no encontrada' });
+
+        res.json(updatedConcesionaria);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'ID inválido' });
+        }
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ message: messages.join(', ') });
+        }
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 }
 
+// DELETE - Eliminar una concesionaria
 async function deleteConcesionaria(req, res) {
     try {
         const { id } = req.params;
         const deletedConcesionaria = await Concesionaria.findByIdAndDelete(id);
+
         if (!deletedConcesionaria) return res.status(404).json({ message: 'Concesionaria no encontrada' });
+
         res.json(deletedConcesionaria);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        if (error.name === 'CastError') {
+            return res.status(400).json({ message: 'ID inválido' });
+        }
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 }
 
+// Helper de pruebas
+/* istanbul ignore next */
 async function _clearConcesionarias() {
-    await Concesionaria.deleteMany({});
+    try {
+        await Concesionaria.deleteMany({});
+    } catch (error) {
+        console.error('Error clearing concesionarias:', error);
+    }
 }
 
-module.exports = {
-    getAllConcesionarias,
-    addNewConcesionaria,
-    updateConcesionaria,
+module.exports = { 
+    getAllConcesionarias, 
+    addNewConcesionaria, 
+    updateConcesionaria, 
     deleteConcesionaria,
-    _clearConcesionarias
+    _clearConcesionarias 
 };
