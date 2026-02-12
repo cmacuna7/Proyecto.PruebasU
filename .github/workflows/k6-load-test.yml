@@ -7,7 +7,7 @@ on:
 
 jobs:
   load_test:
-    name: Run K6 Load Test against Railway
+    name: Run K6 Load Test against Vercel
     runs-on: ubuntu-latest
     
     steps:
@@ -17,7 +17,7 @@ jobs:
       - name: Run K6 Load Test
         uses: grafana/k6-action@v0.3.0
         env:
-          BASE_URL: 'https://proyecto-pruebasu-production.up.railway.app'
+          BASE_URL: 'https://proyecto-pruebasu.vercel.app'
         with:
           filename: k6-tests/load-test.js
           flags: --vus 10 --duration 30s
