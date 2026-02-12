@@ -1,17 +1,17 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { uuidv4 } from './libs/uuid.js';
 
 export function testVendorLifecycle(baseUrl, params) {
     const timestamp = Date.now();
-    const randomSuffix = Math.floor(Math.random() * 1000);
-
+    const uniqueId = uuidv4();
     // Datos del nuevo vendedor
     const newVendor = {
         name: `Vendedor Test ${timestamp}`,
-        email: `test.vendor.${timestamp}.${randomSuffix}@example.com`,
-        telefono: `${1000000 + randomSuffix}`,
+        email: `test.vendor.${uniqueId}@example.com`,
+        telefono: `09${Math.floor(Math.random() * 100000000)}`, // 10 degits
         comision: 10,
-        codigoEmpleado: `EMP-${timestamp}-${randomSuffix}`
+        codigoEmpleado: `EMP-${uniqueId.substring(0, 8).toUpperCase()}`
     };
 
     // 1. Crear Vendor (POST)

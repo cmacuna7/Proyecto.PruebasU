@@ -1,7 +1,7 @@
 import { login } from './auth_k6.js';
 import { testAutoLifecycle } from './autos_k6.js';
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:3000';
+const BASE_URL = __ENV.BASE_URL || 'https://proyecto-pruebasu.onrender.com';
 
 export const options = {
     stages: [

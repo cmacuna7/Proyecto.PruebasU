@@ -1,16 +1,17 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
+import { uuidv4 } from './libs/uuid.js';
 
 export function testClienteLifecycle(baseUrl, params) {
     const timestamp = Date.now();
-    const randomSuffix = Math.floor(Math.random() * 1000);
+    const uniqueId = uuidv4();
 
     // Datos del nuevo cliente (coinciden con el modelo)
     const newClient = {
         nombre: `Cliente Test ${timestamp}`,
-        email: `test.client.${timestamp}.${randomSuffix}@example.com`,
-        telefono: `099${Math.floor(Math.random() * 10000000)}`,
-        direccion: `Calle Falsa ${randomSuffix}`,
+        email: `test.client.${uniqueId}@example.com`,
+        telefono: `09${Math.floor(Math.random() * 100000000)}`,
+        direccion: `Calle Falsa ${uniqueId.substring(0, 5)}`,
         ciudad: 'Quito'
     };
 
@@ -27,7 +28,12 @@ export function testClienteLifecycle(baseUrl, params) {
         return;
     }
 
-    const createdId = createRes.json('cliente.id') || createRes.json('cliente._id');
+    let createdId;
+    if (createRes.status === 201) {
+        const body = createRes.json();
+        // Controller returns { message: '...', cliente: savedCliente }
+        createdId = body.cliente ? (body.cliente.id || body.cliente._id) : (body.id || body._id);
+    }
     sleep(1);
 
     // 2. Obtener todos los clientes (GET)
