@@ -8,15 +8,11 @@
 //    gerente
 // }
 
-const concesionarias = [
-    { id: 1, nombre: 'AutoVentas Central', direccion: 'Av. Amazonas 123', telefono: '0987654321', ciudad: 'Quito', gerente: 'Roberto Silva' },
-    { id: 2, nombre: 'Autos del Pacifico', direccion: 'Malecón 456', telefono: '0912345678', ciudad: 'Guayaquil', gerente: 'Patricia Ruiz' }
-];
-let concesionariaIdCounter = 100;
+const { getConcesionarias, getConcesionariaIdCounter } = require('../utils/globalStore');
 
 // GET - Obtener todas las concesionarias
 function getAllConcesionarias(req, res) {
-    res.json(concesionarias);
+    res.json(getConcesionarias());
 }
 
 function validateConcesionariaData(data, concesionariaId = null) {
@@ -32,6 +28,7 @@ function validateConcesionariaData(data, concesionariaId = null) {
     }
 
     // Validar nombre duplicado
+    const concesionarias = getConcesionarias();
     const nombreExiste = concesionarias.find(c => 
         c.nombre.toLowerCase() === nombre.toLowerCase() && c.id != concesionariaId
     );
@@ -52,7 +49,7 @@ function addNewConcesionaria(req, res) {
     }
 
     const newConcesionaria = {
-        id: concesionariaIdCounter++,
+        id: getConcesionariaIdCounter(),
         nombre,
         direccion,
         telefono,
@@ -60,6 +57,7 @@ function addNewConcesionaria(req, res) {
         gerente
     };
 
+    const concesionarias = getConcesionarias();
     concesionarias.push(newConcesionaria);
     res.status(201).json(newConcesionaria);
 }
@@ -69,6 +67,7 @@ function updateConcesionaria(req, res) {
     const { id } = req.params;
     const { nombre, direccion, telefono, ciudad, gerente } = req.body;
 
+    const concesionarias = getConcesionarias();
     const i = concesionarias.findIndex(c => c.id == id);
     if (i === -1) return res.status(404).json({ message: 'Concesionaria no encontrada' });
 

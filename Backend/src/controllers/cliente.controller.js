@@ -55,8 +55,7 @@ function addNewCliente(req, res) {
 
 function updateCliente(req, res) {
     const { id } = req.params;
-    const { nombre, email, telefono, direccion, ciudad } = req.body;
-    const i = clientes.findIndex(c => c.id == id);
+    const { nombre, email, telefono, direccion, ciudad } = req.body;    const clientes = getClientes();    const i = clientes.findIndex(c => c.id == id);
     if (i === -1) return res.status(404).json({ message: 'Cliente no encontrado' });
 
     // Validar si se está actualizando el email
@@ -77,6 +76,7 @@ function updateCliente(req, res) {
 
 function deleteCliente(req, res) {
     const { id } = req.params;
+    const clientes = getClientes();
     const index = clientes.findIndex(c => c.id == id);
     if (index === -1) return res.status(404).json({ message: 'Cliente no encontrado' });
     const deleted = clientes.splice(index, 1);
@@ -86,6 +86,7 @@ function deleteCliente(req, res) {
 // Helper de pruebas
 /* istanbul ignore next */
 function _clearClientes() {
+    const clientes = getClientes();
     clientes.length = 0;
 }
 

@@ -1,8 +1,4 @@
-const autos = [
-    { id: 1, marca: 'Toyota', modelo: 'Corolla', año: 2023, color: 'Blanco', numeroSerie: 'TOY001' },
-    { id: 2, marca: 'Honda', modelo: 'Civic', año: 2024, color: 'Negro', numeroSerie: 'HON001' }
-];
-let autoIdCounter = 100;
+const { getAutos, getAutoIdCounter } = require('../utils/globalStore');
 const MAX_YEAR = new Date().getFullYear() + 1;
 
 function validateYear(año) {
@@ -11,15 +7,17 @@ function validateYear(año) {
 }
 
 function isSerieUnique(serie, excludeIndex = -1) {
+    const autos = getAutos();
     return !autos.some((a, idx) => idx !== excludeIndex && a.numeroSerie === serie.toUpperCase());
 }
 
 function getAllAutos(req, res) {
-    res.json(autos);
+    res.json(getAutos());
 }
 
 function getAutoById(req, res) {
     const { id } = req.params;
+    const autos = getAutos();
     const auto = autos.find(a => a.id === Number(id));
     if (!auto) return res.status(404).json({ message: 'Auto no encontrado' });
     res.json(auto);
@@ -35,9 +33,10 @@ function addNewAuto(req, res) {
     if (!isSerieUnique(numeroSerie)) return res.status(400).json({ message: 'El número de serie ya existe' });
 
     const newAuto = {
-        id: autoIdCounter++, marca: String(marca).trim(), modelo: String(modelo).trim(),
+        id: getAutoIdCounter(), marca: String(marca).trim(), modelo: String(modelo).trim(),
         año: yearNum, color: String(color).trim(), numeroSerie: String(numeroSerie).trim().toUpperCase()
     };
+    const autos = getAutos();
     autos.push(newAuto);
     res.status(201).json({ message: 'Auto creado exitosamente', data: newAuto });
 }
@@ -45,6 +44,7 @@ function addNewAuto(req, res) {
 function updateAuto(req, res) {
     const { id } = req.params;
     const { marca, modelo, año, color, numeroSerie } = req.body;
+    const autos = getAutos();
     const i = autos.findIndex(a => a.id === Number(id));
     if (i === -1) return res.status(404).json({ message: 'Auto no encontrado' });
 
@@ -82,6 +82,7 @@ function deleteAuto(req, res) {
 // Helper de pruebas: limpia el arreglo de autos 
 /* istanbul ignore next */
 function _clearAutos() {
+    const autos = getAutos();
     autos.length = 0;
 }
 
