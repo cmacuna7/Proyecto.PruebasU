@@ -55,6 +55,9 @@ jobs:
         run: npm test
         env:
           CI: true
+      
+      - name: Ver cobertura Backend
+        run: npm run test:coverage
 
   frontend_test:
     runs-on: ubuntu-latest
