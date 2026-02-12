@@ -44,8 +44,8 @@ function nombreAHex(name) {
 function hexParaNombre(hex) {
   if (!hex) return "";
   const found = coloresComunes.find(
-    c => c.hex.toLowerCase() === String(hex).toLowerCase() || 
-         c.name.toLowerCase() === String(hex).toLowerCase()
+    c => c.hex.toLowerCase() === String(hex).toLowerCase() ||
+      c.name.toLowerCase() === String(hex).toLowerCase()
   );
   return found ? found.name : "";
 }
@@ -104,7 +104,7 @@ function AutosManager() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-    
+
     const anioNum = Number(form.anio);
     if (Number.isNaN(anioNum) || anioNum < 1900) {
       setError("El año debe ser un número válido y como mínimo 1900");
@@ -129,7 +129,7 @@ function AutosManager() {
       } else {
         await crearAuto(payload);
       }
-      
+
       resetForm();
       await cargarAutos();
     } catch (err) {
@@ -167,43 +167,43 @@ function AutosManager() {
         {error && <div className="error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-row">
-            <label>Marca:</label>
-            <select className="input select" name="marca" value={form.marca} onChange={handleChange} required>
+            <label htmlFor="marca">Marca:</label>
+            <select id="marca" className="input select" name="marca" value={form.marca} onChange={handleChange} required>
               <option value="">-- Selecciona una marca --</option>
               {marcasComunes.map(m => <option key={m} value={m}>{m}</option>)}
             </select>
           </div>
 
           <div className="form-row">
-            <label>Modelo:</label>
-            <select className="input select" name="modelo" value={form.modelo} onChange={handleChange} required>
+            <label htmlFor="modelo">Modelo:</label>
+            <select id="modelo" className="input select" name="modelo" value={form.modelo} onChange={handleChange} required>
               <option value="">-- Selecciona un modelo --</option>
               {(modelosPorMarca[form.marca] || []).map(mod => <option key={mod} value={mod}>{mod}</option>)}
             </select>
           </div>
 
           <div className="form-row">
-            <label>Año:</label>
-            <input className="input" name="anio" type="number" min="1900" value={form.anio} onChange={handleChange} required />
+            <label htmlFor="anio">Año:</label>
+            <input id="anio" className="input" name="anio" type="number" min="1900" value={form.anio} onChange={handleChange} required />
           </div>
 
           <div className="form-row">
-            <label>Color:</label>
+            <label htmlFor="color">Color:</label>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <select className="input select" name="color" value={form.color} onChange={handleChange}>
+              <select id="color" className="input select" name="color" value={form.color} onChange={handleChange}>
                 <option value="">-- Selecciona un color --</option>
                 {coloresComunes.map(c => <option key={c.name} value={c.name}>{c.name}</option>)}
               </select>
               <div aria-hidden style={{
                 width: 20, height: 20, borderRadius: 4, border: "1px solid #e6e9ef",
                 background: nombreAHex(form.color) || "transparent"
-              }}/>
+              }} />
             </div>
           </div>
 
           <div className="form-row">
-            <label>Número de Serie / Placa:</label>
-            <input className="input" name="numeroSerie" value={form.numeroSerie} onChange={handleChange} required />
+            <label htmlFor="numeroSerie">Número de Serie / Placa:</label>
+            <input id="numeroSerie" className="input" name="numeroSerie" value={form.numeroSerie} onChange={handleChange} required />
           </div>
 
           <div className="form-actions">
