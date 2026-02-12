@@ -7,47 +7,17 @@ on:
 
 jobs:
   load_test:
-    name: Run K6 Load Test
+    name: Run K6 Load Test against Railway
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Backend Dependencies
-        working-directory: Backend
-        run: npm install
-
-      - name: Start Backend Server
-        working-directory: Backend  
-        run: |
-          echo "Starting backend server..."
-          node src/app.js &
-          SERVER_PID=$!
-          echo "Server PID: $SERVER_PID"
-          echo $SERVER_PID > ../server.pid
-          sleep 10
-          echo "Testing server connection..."
-          curl -v http://localhost:3000/ || exit 1
-        env:
-          PORT: 3000
           
       - name: Run K6 Load Test
         uses: grafana/k6-action@v0.3.0
         env:
-          BASE_URL: 'http://localhost:3000'
+          BASE_URL: 'https://proyecto-pruebasu-production.up.railway.app'
         with:
           filename: k6-tests/load-test.js
-          flags: --vus 5 --duration 20s
-          
-      - name: Stop Backend Server
-        if: always()
-        run: |
-          if [ -f server.pid ]; then
-            kill $(cat server.pid) || true
-          fi
+          flags: --vus 10 --duration 30s

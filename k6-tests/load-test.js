@@ -5,7 +5,7 @@ import { login } from './auth_k6.js';
 import { testAutos } from './autos_k6.js';
 import { testConcesionarias } from './concesionarias_k6.js';
 
-const BASE_URL = __ENV.BASE_URL || 'https://proyecto-pruebasu.vercel.app';
+const BASE_URL = __ENV.BASE_URL || 'https://proyecto-pruebasu-production.up.railway.app';
 
 export const options = {
     stages: [
