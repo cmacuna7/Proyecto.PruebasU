@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app.js');
+const database = require('../src/config/database');
 
 let token;
 
@@ -12,12 +13,15 @@ require('./concesionaria.test.js');
 describe('Pruebas sobre app.js (rutas y middleware)', () => {
     // Obtener token antes de los tests
     beforeAll(async () => {
+      // Asegurar conexión a la base de datos
+      await database.connect();
+      
       const loginRes = await request(app).post('/api/auth/login').send({
         email: 'admin@consecionaria.com',
         password: 'consesionariachida'
       });
       token = loginRes.body.token;
-    });
+    }, 15000); // Timeout de 15 segundos
 
     test('GET / debe devolver mensaje de estado', async () => {
         const res = await request(app).get('/');

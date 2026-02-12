@@ -1,22 +1,26 @@
 const request = require('supertest');
 const app = require('../src/app.js');
 const { _clearAutos } = require('../src/controllers/auto.controller');
+const database = require('../src/config/database');
 
 let token;
 
 describe('API de Autos', () => {
     // Obtener token antes de los tests
     beforeAll(async () => {
+        // Asegurar conexión a la base de datos
+        await database.connect();
+        
         const loginRes = await request(app).post('/api/auth/login').send({
             email: 'admin@consecionaria.com',
             password: 'consesionariachida'
         });
         token = loginRes.body.token;
-    });
+    }, 15000); // Timeout de 15 segundos
 
     // Limpiar autos antes de cada test
-    beforeEach(() => {
-        _clearAutos();
+    beforeEach(async () => {
+        await _clearAutos();
     });
 
     // GET - Obtener lista de autos

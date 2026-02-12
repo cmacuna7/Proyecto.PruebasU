@@ -101,7 +101,6 @@ async function _clearConcesionarias() {
     try {
         await Concesionaria.deleteMany({});
     } catch (_error) {
-        _error.message = 'Error eliminando vendedor: ' + _error.message;
         // Error clearing concesionarias
     }
 }
@@ -109,7 +108,7 @@ async function _clearConcesionarias() {
 module.exports = {
     getAllConcesionarias,
     addNewConcesionaria,
-    updateConcesionaria,
+    updateConcesionaria, 
     deleteConcesionaria,
     _clearConcesionarias
 };

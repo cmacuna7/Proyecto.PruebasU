@@ -1,5 +1,7 @@
 const request = require('supertest');
 const app = require('../src/app');
+const { _clearVendedores } = require('../src/controllers/vendor.controller');
+const database = require('../src/config/database');
 
 let newVendorId;
 let putVendorId;
@@ -17,11 +19,19 @@ describe('API CRUD de Vendedores (/api/vendedores)', () => {
 
   // Obtener token antes de los tests
   beforeAll(async () => {
-    const loginRes = await request(app).post('/api/auth/login').set('Authorization', `Bearer ${token}`).send({
+    // Asegurar conexión a la base de datos
+    await database.connect();
+    
+    const loginRes = await request(app).post('/api/auth/login').send({
       email: 'admin@consecionaria.com',
       password: 'consesionariachida'
     });
     token = loginRes.body.token;
+  }, 15000); // Timeout de 15 segundos
+
+  // Limpiar vendedores antes de cada test
+  beforeEach(async () => {
+    await _clearVendedores();
   });
 
   // 1. POST creación válida
