@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jmeterTestPlan version="1.2" properties="5.0" jmeter="5.6.3">
   <hashTree>
-    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan">
+    <TestPlan guiclass="TestPlanGui" testclass="TestPlan" testname="Test Plan - Concesionaria CRUD">
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables">
         <collectionProp name="Arguments.arguments"/>
       </elementProp>
@@ -9,8 +9,7 @@
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
     </TestPlan>
     <hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group (Vendedores)">
-        <stringProp name="TestPlan.comments">Este thread trabajará todos los endpoints del CRUD para vendedores incluyendo login</stringProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Thread Group (Concesionaria)">
         <intProp name="ThreadGroup.num_threads">30</intProp>
         <intProp name="ThreadGroup.ramp_time">45</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -58,7 +57,7 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report" enabled="true">
+        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -95,7 +94,7 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
+        <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Aggregate Report">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -132,11 +131,11 @@
           <stringProp name="filename"></stringProp>
         </ResultCollector>
         <hashTree/>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (LOGIN)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (LOGIN)">
           <stringProp name="TestPlan.comments">Inicio de sesión para captura de token</stringProp>
           <stringProp name="HTTPSampler.domain">proyecto-pruebasu.onrender.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/auth/login</stringProp>
+          <stringProp name="HTTPSampler.path">/api/auth/login</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -155,7 +154,7 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor (Token)">
             <stringProp name="JSONPostProcessor.referenceNames">token</stringProp>
             <stringProp name="JSONPostProcessor.jsonPathExprs">$.token</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
@@ -172,10 +171,11 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Crear Vendedor)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Crear Concesionaria)">
+          <stringProp name="TestPlan.comments">Crear una nueva concesionaria con datos únicos por hilo</stringProp>
           <stringProp name="HTTPSampler.domain">proyecto-pruebasu.onrender.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/api/vendedores</stringProp>
+          <stringProp name="HTTPSampler.path">/api/concesionarias</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -185,11 +185,11 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-    &quot;name&quot;: &quot;Ana García&quot;,&#xd;
-    &quot;email&quot;: &quot;user${__time()}@example.com&quot;,&#xd;
-    &quot;telefono&quot;: &quot;0987654321&quot;,&#xd;
-    &quot;comision&quot;: 20,&#xd;
-    &quot;codigoEmpleado&quot;: &quot;user${__time()}&quot;&#xd;
+    &quot;nombre&quot;: &quot;Concesionaria ${__threadNum} ${__time()}&quot;,&#xd;
+    &quot;direccion&quot;: &quot;Av. Principal ${__Random(1,100)}&quot;,&#xd;
+    &quot;telefono&quot;: &quot;02${__Random(1000000,9999999)}&quot;,&#xd;
+    &quot;ciudad&quot;: &quot;Quito&quot;,&#xd;
+    &quot;gerente&quot;: &quot;Gerente ${__threadNum} ${__time()}&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -197,7 +197,7 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
             <collectionProp name="HeaderManager.headers">
               <elementProp name="" elementType="Header">
                 <stringProp name="Header.name">Content-Type</stringProp>
@@ -210,18 +210,19 @@
             </collectionProp>
           </HeaderManager>
           <hashTree/>
-          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor" enabled="true">
-            <stringProp name="JSONPostProcessor.referenceNames">id</stringProp>
-            <stringProp name="JSONPostProcessor.jsonPathExprs">$.id</stringProp>
+          <JSONPostProcessor guiclass="JSONPostProcessorGui" testclass="JSONPostProcessor" testname="JSON Extractor (ID Concesionaria)">
+            <stringProp name="JSONPostProcessor.referenceNames">concesionariaId</stringProp>
+            <stringProp name="JSONPostProcessor.jsonPathExprs">$.data.id</stringProp>
             <stringProp name="JSONPostProcessor.match_numbers"></stringProp>
             <stringProp name="JSONPostProcessor.defaultValues">NO DEFINIDO</stringProp>
           </JSONPostProcessor>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Ver Vendedores)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Ver Concesionarias)">
+          <stringProp name="TestPlan.comments">Obtener lista de todas las concesionarias</stringProp>
           <stringProp name="HTTPSampler.domain">proyecto-pruebasu.onrender.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/api/vendedores</stringProp>
+          <stringProp name="HTTPSampler.path">/api/concesionarias</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -245,10 +246,11 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Ver Vendedor por ID)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Ver Concesionaria por ID)">
+          <stringProp name="TestPlan.comments">Obtener una concesionaria específica por su ID</stringProp>
           <stringProp name="HTTPSampler.domain">proyecto-pruebasu.onrender.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/api/vendedores/${id}</stringProp>
+          <stringProp name="HTTPSampler.path">/api/concesionarias/${concesionariaId}</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -272,10 +274,11 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Actualizar Vendedor)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Actualizar Concesionaria)" enabled="true">
+          <stringProp name="TestPlan.comments">Actualizar la concesionaria creada previamente</stringProp>
           <stringProp name="HTTPSampler.domain">proyecto-pruebasu.onrender.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/api/vendedores/${id}</stringProp>
+          <stringProp name="HTTPSampler.path">/api/concesionarias/${concesionariaId}</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">PUT</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
@@ -285,7 +288,8 @@
               <elementProp name="" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
                 <stringProp name="Argument.value">{&#xd;
-    &quot;name&quot;: &quot;Ana García actualizado&quot;&#xd;
+    &quot;gerente&quot;: &quot;Nuevo Gerente ${__RandomString(5,abcdef)}&quot;,&#xd;
+    &quot;telefono&quot;: &quot;02${__Random(1000000,9999999)}&quot;&#xd;
 }</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
               </elementProp>
@@ -307,10 +311,11 @@
           </HeaderManager>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Eliminar Vendedor)" enabled="true">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request (Eliminar Concesionaria)" enabled="true">
+          <stringProp name="TestPlan.comments">Eliminar la concesionaria creada en este hilo</stringProp>
           <stringProp name="HTTPSampler.domain">proyecto-pruebasu.onrender.com</stringProp>
           <stringProp name="HTTPSampler.protocol">https</stringProp>
-          <stringProp name="HTTPSampler.path">/api/vendedores/${id}</stringProp>
+          <stringProp name="HTTPSampler.path">/api/concesionarias/${concesionariaId}</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <stringProp name="HTTPSampler.method">DELETE</stringProp>
           <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
