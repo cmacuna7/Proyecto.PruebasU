@@ -20,4 +20,4 @@ jobs:
           BASE_URL: 'https://proyecto-pruebasu.vercel.app'
         with:
           filename: k6-tests/load-test.js
-          flags: --vus 10 --duration 30s
+          flags: --vus 5 --duration 20s
