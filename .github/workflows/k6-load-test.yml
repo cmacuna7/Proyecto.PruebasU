@@ -25,16 +25,31 @@ jobs:
       - name: Install Backend Dependencies
         run: npm install
 
-      - name: Start Backend Server
-        run: npm start &
+      - name: Start Backend Server in Background
+        run: |
+          echo "Starting backend server..."
+          nohup npm start > backend.log 2>&1 &
+          echo $! > backend.pid
         env:
           PORT: 3000
+          NODE_ENV: test
         
       - name: Wait for server to be ready
         run: |
           echo "Waiting for server to start..."
-          sleep 10
-          curl -f http://localhost:3000 || exit 1
+          for i in {1..30}; do
+            if curl -f http://localhost:3000 > /dev/null 2>&1; then
+              echo "Server is ready!"
+              curl http://localhost:3000
+              exit 0
+            fi
+            echo "Attempt $i/30: Server not ready yet, waiting..."
+            sleep 2
+          done
+          echo "Server failed to start after 60 seconds"
+          echo "Backend logs:"
+          cat backend.log
+          exit 1
           
       - name: Run K6 Load Test
         uses: grafana/k6-action@v0.3.0
