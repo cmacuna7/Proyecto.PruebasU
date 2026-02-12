@@ -29,6 +29,9 @@ jobs:
 
       - name: Ejecutar pruebas Backend
         run: npm test
+      
+      - name: Ver cobertura Backend
+        run: npm run test:coverage
 
   frontend_test:
     runs-on: ubuntu-latest
