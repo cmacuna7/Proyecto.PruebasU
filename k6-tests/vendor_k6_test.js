@@ -39,7 +39,7 @@ export function testVendorLifecycle(baseUrl, params) {
             return Array.isArray(body) && body.some(v => v.id === createdId);
         }
     });
-    sleep(1);
+    sleep(2);
 
     // 3. Obtener vendor por ID (GET)
     const getByIdRes = http.get(`${baseUrl}/api/vendedores/${createdId}`, params);

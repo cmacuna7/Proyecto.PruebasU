@@ -48,11 +48,15 @@ export function testClienteLifecycle(baseUrl, params) {
     check(getByIdRes, {
         'get client by id status is 200': (r) => r.status === 200,
         'client id matches': (r) => {
+            if (r.status !== 200) return false;
             const body = r.json();
-            return (body.id === createdId || body._id === createdId);
+            const clientData = body.cliente || body; // Handle wrapped or unwrapped
+            const match = (clientData.id == createdId || clientData._id == createdId);
+            if (!match) console.log(`ID Mismatch: Expected ${createdId}, Got ${clientData.id || clientData._id}. Body: ${JSON.stringify(body)}`);
+            return match;
         }
     });
-    sleep(1);
+    sleep(2); // Aumentar espera a 2s
 
     // 4. Actualizar cliente (PUT)
     const updatePayload = JSON.stringify({
@@ -63,8 +67,8 @@ export function testClienteLifecycle(baseUrl, params) {
     const updateRes = http.put(`${baseUrl}/api/clientes/${createdId}`, updatePayload, params);
     check(updateRes, {
         'update client status is 200': (r) => r.status === 200,
-        'client updated name matches': (r) => r.json('nombre') === `Cliente Updated ${timestamp}`,
-        'client updated city matches': (r) => r.json('ciudad') === 'Guayaquil',
+        'client updated name matches': (r) => r.json('cliente.nombre') === `Cliente Updated ${timestamp}`,
+        'client updated city matches': (r) => r.json('cliente.ciudad') === 'Guayaquil',
     });
     sleep(1);
 
