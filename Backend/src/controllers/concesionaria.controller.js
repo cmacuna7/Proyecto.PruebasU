@@ -1,117 +1,117 @@
-// Modelo Concesionaria con 5 atributos:
-// {
-//    id
-//    nombre
-//    direccion
-//    telefono
-//    ciudad
-//    gerente
-// }
+const Concesionaria = require('../models/concesionaria.model');
 
-const { getConcesionarias, getConcesionariaIdCounter } = require('../utils/globalStore');
-
-// GET - Obtener todas las concesionarias
-function getAllConcesionarias(req, res) {
-    res.json(getConcesionarias());
+async function getAllConcesionarias(req, res) {
+    try {
+        const concesionarias = await Concesionaria.find();
+        res.json(concesionarias);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
 
-function validateConcesionariaData(data, concesionariaId = null) {
+async function validateConcesionariaData(data, concesionariaId = null) {
     const { nombre, direccion, telefono, ciudad, gerente } = data;
 
     if (!nombre || !direccion || !telefono || !ciudad || !gerente) {
         return 'Nombre, Dirección, Teléfono, Ciudad y Gerente son requeridos';
     }
 
-    if (nombre.trim() === '' || direccion.trim() === '' || telefono.trim() === '' || 
+    if (nombre.trim() === '' || direccion.trim() === '' || telefono.trim() === '' ||
         ciudad.trim() === '' || gerente.trim() === '') {
         return 'Los campos no pueden estar vacíos o contener solo espacios';
     }
 
     // Validar nombre duplicado
-    const concesionarias = getConcesionarias();
-    const nombreExiste = concesionarias.find(c => 
-        c.nombre.toLowerCase() === nombre.toLowerCase() && c.id != concesionariaId
-    );
-    if (nombreExiste) {
+    const query = { nombre: new RegExp(`^${nombre}$`, 'i') }; // Case-insensitive check
+    if (concesionariaId) {
+        query._id = { $ne: concesionariaId };
+    }
+    const existing = await Concesionaria.findOne(query);
+    if (existing) {
         return 'Ya existe una concesionaria con ese nombre';
     }
 
     return null;
 }
 
-// POST - Crear una nueva concesionaria
-function addNewConcesionaria(req, res) {
-    const { nombre, direccion, telefono, ciudad, gerente } = req.body;
+async function addNewConcesionaria(req, res) {
+    try {
+        const { nombre, direccion, telefono, ciudad, gerente } = req.body;
 
-    const error = validateConcesionariaData(req.body);
-    if (error) {
-        return res.status(400).json({ message: error });
-    }
-
-    const newConcesionaria = {
-        id: getConcesionariaIdCounter(),
-        nombre,
-        direccion,
-        telefono,
-        ciudad,
-        gerente
-    };
-
-    const concesionarias = getConcesionarias();
-    concesionarias.push(newConcesionaria);
-    res.status(201).json(newConcesionaria);
-}
-
-// PUT - Actualizar una concesionaria existente
-function updateConcesionaria(req, res) {
-    const { id } = req.params;
-    const { nombre, direccion, telefono, ciudad, gerente } = req.body;
-
-    const concesionarias = getConcesionarias();
-    const i = concesionarias.findIndex(c => c.id == id);
-    if (i === -1) return res.status(404).json({ message: 'Concesionaria no encontrada' });
-
-    // Validar si se está actualizando el nombre
-    if (nombre !== undefined) {
-        const error = validateConcesionariaData({ nombre, direccion: direccion || concesionarias[i].direccion, telefono: telefono || concesionarias[i].telefono, ciudad: ciudad || concesionarias[i].ciudad, gerente: gerente || concesionarias[i].gerente }, id);
+        const error = await validateConcesionariaData(req.body);
         if (error) {
             return res.status(400).json({ message: error });
         }
+
+        const newConcesionaria = new Concesionaria({
+            nombre,
+            direccion,
+            telefono,
+            ciudad,
+            gerente
+        });
+
+        await newConcesionaria.save();
+        res.status(201).json(newConcesionaria);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
-
-    if (nombre !== undefined) concesionarias[i].nombre = nombre;
-    if (direccion !== undefined) concesionarias[i].direccion = direccion;
-    if (telefono !== undefined) concesionarias[i].telefono = telefono;
-    if (ciudad !== undefined) concesionarias[i].ciudad = ciudad;
-    if (gerente !== undefined) concesionarias[i].gerente = gerente;
-
-    res.json(concesionarias[i]);
 }
 
-// DELETE - Eliminar una concesionaria
-function deleteConcesionaria(req, res) {
-    const { id } = req.params;
-    const concesionarias = getConcesionarias();
-  
-    const index = concesionarias.findIndex(c => c.id == id);
-    if (index === -1) return res.status(404).json({ message: 'Concesionaria no encontrada' });
+async function updateConcesionaria(req, res) {
+    try {
+        const { id } = req.params;
+        const { nombre, direccion, telefono, ciudad, gerente } = req.body;
 
-    const deleted = concesionarias.splice(index, 1);
+        const concesionaria = await Concesionaria.findById(id);
+        if (!concesionaria) return res.status(404).json({ message: 'Concesionaria no encontrada' });
 
-    res.json(deleted[0]);
+        if (nombre !== undefined) {
+            const error = await validateConcesionariaData({
+                nombre,
+                direccion: direccion || concesionaria.direccion,
+                telefono: telefono || concesionaria.telefono,
+                ciudad: ciudad || concesionaria.ciudad,
+                gerente: gerente || concesionaria.gerente
+            }, id);
+
+            if (error) {
+                return res.status(400).json({ message: error });
+            }
+        }
+
+        if (nombre !== undefined) concesionaria.nombre = nombre;
+        if (direccion !== undefined) concesionaria.direccion = direccion;
+        if (telefono !== undefined) concesionaria.telefono = telefono;
+        if (ciudad !== undefined) concesionaria.ciudad = ciudad;
+        if (gerente !== undefined) concesionaria.gerente = gerente;
+
+        await concesionaria.save();
+        res.json(concesionaria);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
 }
 
-// Helper de pruebas
-/* istanbul ignore next */
-function _clearConcesionarias() {
-    const concesionarias = getConcesionarias();
-    concesionarias.length = 0;
+async function deleteConcesionaria(req, res) {
+    try {
+        const { id } = req.params;
+        const deletedConcesionaria = await Concesionaria.findByIdAndDelete(id);
+        if (!deletedConcesionaria) return res.status(404).json({ message: 'Concesionaria no encontrada' });
+        res.json(deletedConcesionaria);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
 
-module.exports = { 
-    getAllConcesionarias, 
-    addNewConcesionaria, 
-    updateConcesionaria, 
+async function _clearConcesionarias() {
+    await Concesionaria.deleteMany({});
+}
+
+module.exports = {
+    getAllConcesionarias,
+    addNewConcesionaria,
+    updateConcesionaria,
     deleteConcesionaria,
-    _clearConcesionarias 
+    _clearConcesionarias
 };

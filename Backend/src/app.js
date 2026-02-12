@@ -9,6 +9,10 @@ const { authMiddleware } = require('./middleware/authMiddleware');
 
 const app = express();
 
+// Conectar a Base deatos
+const connectDB = require('./config/db');
+connectDB();
+
 // middlewares
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
