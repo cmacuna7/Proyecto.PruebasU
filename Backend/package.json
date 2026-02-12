@@ -5,10 +5,16 @@
   "scripts": {
     "start": "node src/app.js",
     "seed": "node src/seeders.js",
-    "test": "jest",
-    "test-coverage": "jest --coverage",
+    "test": "jest --forceExit --detectOpenHandles --maxWorkers=1",
+    "test-coverage": "jest --coverage --forceExit --detectOpenHandles --maxWorkers=1",
     "lint": "eslint",
     "lintFix": "eslint --fix"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/test/setup.js"],
+    "testTimeout": 30000,
+    "verbose": true
   },
   "repository": {
     "type": "git",

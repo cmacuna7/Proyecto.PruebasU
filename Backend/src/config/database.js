@@ -7,13 +7,9 @@ class Database {
 
     async connect() {
         try {
-            await mongoose.connect(this.mongoUrl, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            });
+            await mongoose.connect(this.mongoUrl);
             // Connection successful
         } catch (error) {
-            error.message = 'Error conectando a MongoDB: ' + error.message;
             // MongoDB connection failed
             process.exit(1);
         }
@@ -24,7 +20,6 @@ class Database {
             await mongoose.connection.close();
             // Disconnected from MongoDB
         } catch (error) {
-            error.message = 'Error eliminando cliente: ' + error.message;
             // Error disconnecting from MongoDB
         }
     }
